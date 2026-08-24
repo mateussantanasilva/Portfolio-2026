@@ -1,5 +1,4 @@
 import iconGithubSocial from '@/assets/icons/GitHub.png'
-import iconInstagram from '@/assets/icons/Instagram.png'
 import iconLinkedin from '@/assets/icons/Linkedin.png'
 import iconBriefcase from '@/assets/icons/menu/briefcase.svg'
 import iconContact from '@/assets/icons/menu/contact.svg'
@@ -53,11 +52,6 @@ export const portfolio = {
         href: 'https://www.linkedin.com/in/mateus-santana-silva/',
         icon: iconLinkedin,
         label: 'LinkedIn',
-      },
-      {
-        href: 'https://www.instagram.com/santana__mss/',
-        icon: iconInstagram,
-        label: 'Instagram',
       },
     ],
     subtitle:
