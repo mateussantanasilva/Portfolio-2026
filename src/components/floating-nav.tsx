@@ -26,7 +26,12 @@ export function FloatingNav() {
         item.id === 'projetos' && 'max-[375px]:hidden',
         item.id === 'curriculo' && 'max-md:hidden'
       ),
-      download: 'download' in item ? item.download : undefined,
+      download:
+        'download' in item &&
+        (typeof item.download === 'boolean' ||
+          typeof item.download === 'string')
+          ? item.download
+          : undefined,
       external: 'external' in item ? item.external : undefined,
       fill: Boolean(isImage),
       href: item.href,

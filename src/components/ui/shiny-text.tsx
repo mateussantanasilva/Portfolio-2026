@@ -28,7 +28,7 @@ export function ShinyText({
   yoyo = false,
 }: ShinyTextProps) {
   const reduceMotion = useReducedMotion()
-  const isDisabled = disabled || reduceMotion
+  const isDisabled = Boolean(disabled || reduceMotion)
 
   const { backgroundPosition } = useShinyProgress({
     delay,
@@ -82,7 +82,7 @@ export function ShinySurface({
   spread = 120,
 }: ShinySurfaceProps) {
   const reduceMotion = useReducedMotion()
-  const isDisabled = disabled || reduceMotion || !active
+  const isDisabled = Boolean(disabled || reduceMotion || !active)
   const clamped = Math.min(1, Math.max(0, intensity))
   const band = 8 + (1 - clamped) * 22
   const start = Math.max(0, 50 - band)
