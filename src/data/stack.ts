@@ -141,7 +141,7 @@ const agile: StackCategory = {
 }
 
 /** Linhas lógicas (ordem de leitura no mobile) */
-export const stackRows = [
+const stackRows = [
   [frontend, design, mobile],
   [backend, testing, databases],
   [cloud, agile, engineering],

@@ -16,7 +16,6 @@ import projectBibliotroca from '@/assets/projects/bibliotroca.webp'
 import projectConnecta from '@/assets/projects/connecta.webp'
 import projectIgnite from '@/assets/projects/ignite-projects.webp'
 import projectSavpets from '@/assets/projects/savpets.webp'
-import { stackCategories } from '@/data/stack'
 
 const cvUrl = '/CV_MateusSantana.pdf'
 
@@ -28,8 +27,6 @@ export const portfolio = {
   },
   contact: {
     cta: 'Continuar no WhatsApp',
-    cvLabel: 'Ver currículo',
-    cvUrl,
     email: 'santanasilva1778@gmail.com',
     emailLabel: 'E-mail',
     form: {
@@ -196,7 +193,6 @@ export const portfolio = {
     title: '/Atuação',
   },
   stack: {
-    categories: stackCategories,
     description:
       'Tecnologias, práticas e fundamentos que aplico para construir e evoluir produtos digitais.',
     title: '/Habilidades',

@@ -2,63 +2,6 @@ import { motion, useReducedMotion } from 'motion/react'
 import { useShinyProgress } from '@/hooks/use-shiny-progress'
 import { cn } from '@/lib/utils'
 
-interface ShinyTextProps {
-  className?: string
-  color?: string
-  delay?: number
-  direction?: 'left' | 'right'
-  disabled?: boolean
-  shineColor?: string
-  speed?: number
-  spread?: number
-  text: string
-  yoyo?: boolean
-}
-
-export function ShinyText({
-  className,
-  color = '#b5b5b5',
-  delay = 0,
-  direction = 'left',
-  disabled = false,
-  shineColor = '#ffffff',
-  speed = 2,
-  spread = 120,
-  text,
-  yoyo = false,
-}: ShinyTextProps) {
-  const reduceMotion = useReducedMotion()
-  const isDisabled = Boolean(disabled || reduceMotion)
-
-  const { backgroundPosition } = useShinyProgress({
-    delay,
-    direction,
-    disabled: isDisabled,
-    speed,
-    yoyo,
-  })
-
-  if (isDisabled) {
-    return <span className={className}>{text}</span>
-  }
-
-  return (
-    <motion.span
-      className={cn('inline-block', className)}
-      style={{
-        backgroundClip: 'text',
-        backgroundImage: `linear-gradient(${spread}deg, ${color} 0%, ${color} 35%, ${shineColor} 50%, ${color} 65%, ${color} 100%)`,
-        backgroundPosition,
-        backgroundSize: '200% auto',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      }}
-    >
-      {text}
-    </motion.span>
-  )
-}
-
 interface ShinySurfaceProps {
   active?: boolean
   className?: string
@@ -84,6 +27,7 @@ export function ShinySurface({
   const reduceMotion = useReducedMotion()
   const isDisabled = Boolean(disabled || reduceMotion || !active)
   const clamped = Math.min(1, Math.max(0, intensity))
+  // Intensidade baixa = faixa larga e suave; alta = faixa estreita e marcada
   const band = 8 + (1 - clamped) * 22
   const start = Math.max(0, 50 - band)
   const end = Math.min(100, 50 + band)
