@@ -12,10 +12,10 @@ export function Services() {
 
   return (
     <section className="relative z-10" id="atuacao">
-      {/* Faixa diagonal: invade um pouco as seções vizinhas */}
+      {/* Faixa de fundo reta */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-6 -bottom-8 md:-top-12 md:-bottom-16 lg:-top-16 lg:-bottom-20 max-md:[clip-path:polygon(0_5%,100%_0%,100%_95%,0_100%)] md:[clip-path:polygon(0_8%,100%_0%,100%_92%,0_100%)]"
+        className="pointer-events-none absolute inset-0"
       >
         <div className="absolute inset-0 bg-portfolio-navy" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_10%_25%,rgba(69,92,233,0.18),transparent_55%)]" />

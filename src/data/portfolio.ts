@@ -7,7 +7,7 @@ import iconHome from '@/assets/icons/menu/home.svg'
 import iconFile from '@/assets/icons/menu/icon-file.svg'
 import iconMonitorCode from '@/assets/icons/menu/monitor-code.svg'
 import iconUser from '@/assets/icons/menu/user.svg'
-import heroImage from '@/assets/portfolio/hero.png'
+import heroPortrait from '@/assets/portfolio/hero-me.png'
 import iconCpu from '@/assets/portfolio/icon-cpu.svg'
 import iconMonitor from '@/assets/portfolio/icon-monitor.svg'
 import iconServer from '@/assets/portfolio/icon-server.svg'
@@ -104,9 +104,9 @@ export const portfolio = {
     title: '/Experiência',
   },
   hero: {
-    background: heroImage,
     bio: 'Minha atuação é focada em front-end, complementada por experiência em aplicações mobile e conhecimentos de back-end.',
-    title: 'Desenvolvedor · Full Stack ·',
+    portrait: heroPortrait,
+    title: 'Desenvolvedor',
   },
   intro: {
     body: 'Atuo como desenvolvedor front-end, criando sistemas para campanhas, gestão empresarial e financeira, automação de processos, além de aplicações mobile e soluções desktop offline. Sou pós-graduado em Engenharia de Software e graduado pela FATEC Zona Leste, com Láurea Acadêmica.',
