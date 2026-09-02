@@ -18,21 +18,6 @@ function smoothstep(edge0: number, edge1: number, x: number): number {
   return t * t * (3 - 2 * t)
 }
 
-type ConfigKey =
-  | 'startWidth'
-  | 'startHeight'
-  | 'endWidth'
-  | 'endHeight'
-  | 'startRadius'
-  | 'endRadius'
-  | 'mediaZoom'
-  | 'scrollDistance'
-  | 'holdDistance'
-  | 'smoothing'
-  | 'overlayScrim'
-  | 'useWindowScroll'
-  | 'enabled'
-
 export interface ScrollExpandProps {
   alt?: string
   children?: ReactNode
@@ -42,9 +27,18 @@ export interface ScrollExpandProps {
   endRadius?: number
   endWidth?: number
   holdDistance?: number
+  /**
+   * Altura máxima do card expandido (px). Em telas altas o stage continua
+   * em viewport cheia e o card fica centralizado — sem painel gigante.
+   */
+  maxCardHeight?: number
   media?: ReactNode
   mediaType?: 'image' | 'video'
   mediaZoom?: number
+  /** Altura mínima do card expandido (px). */
+  minCardHeight?: number
+  /** Notifica a altura medida do conteúdo (para decidir se o reveal cabe na viewport). */
+  onContentHeight?: (height: number) => void
   overlayClassName?: string
   overlayScrim?: number
   poster?: string
@@ -96,6 +90,27 @@ function renderDefaultMedia({
   )
 }
 
+/** Card cresce com o conteúdo, com piso/teto; nunca passa da viewport. */
+function resolveCardHeight({
+  contentHeight,
+  maxCardHeight,
+  minCardHeight,
+  viewportHeight,
+}: {
+  contentHeight: number
+  maxCardHeight?: number
+  minCardHeight?: number
+  viewportHeight: number
+}) {
+  const floor = minCardHeight ?? 0
+  const ceiling = Math.min(
+    viewportHeight,
+    maxCardHeight ?? viewportHeight
+  )
+  const natural = Math.max(contentHeight, floor)
+  return clamp(natural, Math.min(floor, ceiling), ceiling)
+}
+
 export default function ScrollExpand({
   src = '',
   media,
@@ -118,6 +133,9 @@ export default function ScrollExpand({
   overlayScrim = 0.45,
   useWindowScroll = false,
   enabled = true,
+  minCardHeight,
+  maxCardHeight,
+  onContentHeight,
   children,
   className = '',
   overlayClassName = '',
@@ -130,19 +148,38 @@ export default function ScrollExpand({
   const mediaRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const scrimRef = useRef<HTMLDivElement>(null)
   const hintRef = useRef<HTMLDivElement>(null)
 
-  const propsRef = useRef<Required<Pick<ScrollExpandProps, ConfigKey>>>(
-    {} as Required<Pick<ScrollExpandProps, ConfigKey>>
-  )
+  const propsRef = useRef({
+    enabled,
+    endHeight,
+    endRadius,
+    endWidth,
+    holdDistance,
+    maxCardHeight,
+    mediaZoom,
+    minCardHeight,
+    onContentHeight,
+    overlayScrim,
+    scrollDistance,
+    smoothing,
+    startHeight,
+    startRadius,
+    startWidth,
+    useWindowScroll,
+  })
   propsRef.current = {
     enabled,
     endHeight,
     endRadius,
     endWidth,
     holdDistance,
+    maxCardHeight,
     mediaZoom,
+    minCardHeight,
+    onContentHeight,
     overlayScrim,
     scrollDistance,
     smoothing,
@@ -151,6 +188,9 @@ export default function ScrollExpand({
     startWidth,
     useWindowScroll,
   }
+
+  /** endHeight efetivo (%) — recalculado no measure quando há min/max de card */
+  const endHeightRef = useRef(endHeight)
 
   const applyProgress = useCallback((p: number) => {
     const frame = frameRef.current
@@ -161,9 +201,10 @@ export default function ScrollExpand({
     const c = propsRef.current
 
     const e = smoothstep(0, 1, p)
+    const resolvedEndHeight = endHeightRef.current
 
     const w = c.startWidth + (c.endWidth - c.startWidth) * e
-    const h = c.startHeight + (c.endHeight - c.startHeight) * e
+    const h = c.startHeight + (resolvedEndHeight - c.startHeight) * e
     const ix = Math.max(0, (100 - w) / 2)
     const iy = Math.max(0, (100 - h) / 2)
     const r = c.startRadius + (c.endRadius - c.startRadius) * e
@@ -222,10 +263,44 @@ export default function ScrollExpand({
 
     const measure = () => {
       const c = propsRef.current
-      stageH = c.useWindowScroll ? window.innerHeight : root.clientHeight
-      if (stageH <= 0) return
+      const viewportH = c.useWindowScroll ? window.innerHeight : root.clientHeight
+      if (viewportH <= 0) return
+
+      const contentH = contentRef.current?.offsetHeight ?? 0
+      c.onContentHeight?.(contentH)
+
+      // Sem efeito de revelar: seção estática no tamanho do conteúdo (sem track extra).
+      if (!c.enabled) {
+        stageH = Math.max(contentH, c.minCardHeight ?? 0)
+        stage.style.height = `${stageH}px`
+        track.style.height = `${stageH}px`
+        endHeightRef.current = 100
+        stage.style.setProperty(
+          '--se-title-size',
+          `${clamp((root.clientWidth || stageH) * 0.075, 20, 84)}px`
+        )
+        return
+      }
+
+      // Stage sempre preenche a viewport — o card é que fica limitado e centralizado.
+      stageH = viewportH
       stage.style.height = `${stageH}px`
       track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`
+
+      const hasCardBounds =
+        c.minCardHeight !== undefined || c.maxCardHeight !== undefined
+
+      if (hasCardBounds) {
+        const cardH = resolveCardHeight({
+          contentHeight: contentH,
+          maxCardHeight: c.maxCardHeight,
+          minCardHeight: c.minCardHeight,
+          viewportHeight: viewportH,
+        })
+        endHeightRef.current = clamp((cardH / stageH) * 100, c.startHeight, 100)
+      } else {
+        endHeightRef.current = c.endHeight
+      }
 
       const w = root.clientWidth || stageH
       stage.style.setProperty(
@@ -290,6 +365,8 @@ export default function ScrollExpand({
     window.addEventListener('resize', onResize)
     const ro = new ResizeObserver(onResize)
     ro.observe(root)
+    const contentEl = contentRef.current
+    if (contentEl) ro.observe(contentEl)
 
     return () => {
       if (raf) cancelAnimationFrame(raf)
@@ -297,7 +374,26 @@ export default function ScrollExpand({
       window.removeEventListener('resize', onResize)
       ro.disconnect()
     }
-  }, [applyProgress, useWindowScroll])
+  }, [applyProgress, enabled, useWindowScroll])
+
+  // Com useWindowScroll, o progresso depende do scroll da janela.
+  // Com pointer-events no overlay (form clicável), o wheel não pode ficar preso no card.
+  useEffect(() => {
+    if (!(enabled && useWindowScroll)) return
+
+    const overlay = overlayRef.current
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: ref null until mounted
+    if (!overlay) return
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault()
+      window.scrollBy({ left: event.deltaX, top: event.deltaY })
+    }
+
+    overlay.addEventListener('wheel', onWheel, { capture: true, passive: false })
+    return () =>
+      overlay.removeEventListener('wheel', onWheel, { capture: true })
+  }, [enabled, useWindowScroll])
 
   const renderedMedia =
     media ?? renderDefaultMedia({ alt, mediaType, poster, src })
@@ -315,11 +411,19 @@ export default function ScrollExpand({
     >
       <div className="relative w-full" ref={trackRef}>
         <div
-          className="sticky top-0 w-full overflow-hidden [--se-title-size:4rem]"
+          className={cn(
+            'w-full overflow-hidden [--se-title-size:4rem]',
+            enabled ? 'sticky top-0' : 'relative'
+          )}
           ref={stageRef}
         >
           <div
-            className="absolute inset-0 [clip-path:inset(21%_29%_21%_29%_round_24px)] [will-change:clip-path]"
+            className={cn(
+              'absolute inset-0 [will-change:clip-path]',
+              enabled
+                ? '[clip-path:inset(21%_29%_21%_29%_round_24px)]'
+                : '[clip-path:inset(0%_0%_0%_0%_round_40px)]'
+            )}
             ref={frameRef}
           >
             <div
@@ -335,17 +439,26 @@ export default function ScrollExpand({
             {children ? (
               <div
                 className={cn(
-                  'absolute inset-0 flex flex-col items-center justify-center p-[6%] text-center opacity-0 [will-change:opacity,transform]',
-                  !enabled && 'pointer-events-auto opacity-100',
+                  'absolute inset-0 flex flex-col items-center justify-center p-[6%] text-center [will-change:opacity,transform]',
+                  // Com scroll da janela, não prender o wheel no overlay —
+                  // senão o card expandido “engole” o scroll e não recolhe.
+                  enabled && useWindowScroll
+                    ? 'overflow-hidden'
+                    : 'overflow-y-auto overscroll-contain',
+                  enabled
+                    ? 'opacity-0'
+                    : 'pointer-events-auto opacity-100',
                   overlayClassName
                 )}
                 ref={overlayRef}
               >
-                {children}
+                <div className="w-full shrink-0" ref={contentRef}>
+                  {children}
+                </div>
               </div>
             ) : null}
           </div>
-          {teaser || title ? (
+          {enabled && (teaser || title) ? (
             <div
               className="pointer-events-none absolute inset-0 m-0 flex items-center justify-center px-[6%] text-center [will-change:opacity,transform]"
               ref={titleRef}
@@ -357,7 +470,7 @@ export default function ScrollExpand({
               )}
             </div>
           ) : null}
-          {scrollHint ? (
+          {enabled && scrollHint ? (
             <div
               className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center text-center text-[0.8125rem] text-white/55 tracking-[0.02em] [will-change:opacity,transform]"
               ref={hintRef}

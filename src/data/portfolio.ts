@@ -111,9 +111,9 @@ export const portfolio = {
     title: 'Desenvolvedor',
   },
   intro: {
-    body: 'Atuo como desenvolvedor front-end, criando sistemas para campanhas, gestão empresarial e financeira, automação de processos, além de aplicações mobile e soluções desktop offline. Sou pós-graduado em Engenharia de Software e graduado pela FATEC Zona Leste, com Láurea Acadêmica.',
+    body: 'Atuo como desenvolvedor front-end em sistemas para campanhas, gestão empresarial e financeira, automações, além de apps mobile e desktop offline. Sou pós-graduado em Engenharia de Software e graduado pela FATEC Zona Leste, com Láurea Acadêmica.',
     cvUrl,
-    lead: 'Desenvolvo interfaces e sistemas que transformam necessidades de negócio em experiências digitais claras, confiáveis e fáceis de evoluir.',
+    lead: 'Desenvolvo interfaces e sistemas com visual moderno, animações performáticas e experiências digitais confiáveis e de fácil manutenção.',
     link: 'Ver currículo',
   },
   nav: {
@@ -169,7 +169,7 @@ export const portfolio = {
     items: [
       {
         description:
-          'Criação e evolução de interfaces responsivas, acessíveis e integradas a APIs com React, Next.js, TypeScript e Design Systems.',
+          'Criação e evolução de interfaces responsivas, acessíveis e integradas a APIs com React, Next.js, TypeScript e Design System.',
         icon: iconMonitor,
         name: 'Desenvolvimento Front-end',
       },

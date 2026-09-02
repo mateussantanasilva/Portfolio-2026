@@ -45,8 +45,8 @@ export function Hero() {
           </motion.p>
           <BubbleEntrance className="flex sm:justify-end" delay={0.08}>
             <AnimatedThemeToggler
+              className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-transparent text-foreground transition-opacity hover:opacity-70 md:size-12"
               onThemeChange={setTheme}
-              specular
               theme={theme}
             />
           </BubbleEntrance>

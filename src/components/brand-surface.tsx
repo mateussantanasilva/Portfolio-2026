@@ -27,7 +27,8 @@ export function BrandSurface({ className }: BrandSurfaceProps) {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `radial-gradient(rgba(255, 255, 255, var(--portfolio-brand-dot-alpha)) 1px, transparent 1px)`,
+          backgroundImage:
+            'radial-gradient(rgba(255, 255, 255, var(--portfolio-brand-dot-alpha)) 1px, transparent 1px)',
           backgroundSize: '16px 16px',
           maskImage:
             'linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5))',

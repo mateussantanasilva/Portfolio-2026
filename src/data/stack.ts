@@ -37,7 +37,7 @@ export interface StackCategory {
 
 const frontend: StackCategory = {
   description:
-    'Interfaces responsivas, acessíveis e performáticas com React, Next.js, TypeScript e componentes reutilizáveis.',
+    'Interfaces animadas, responsivas e performáticas com React, Next.js, TypeScript e componentes reutilizáveis.',
   id: 'frontend',
   name: 'Front-end',
   techs: [

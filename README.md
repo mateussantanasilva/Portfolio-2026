@@ -1,0 +1,2 @@
+colocar google analytics
+refatorar projeto
