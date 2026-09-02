@@ -51,7 +51,7 @@ const frontend: StackCategory = {
 
 const design: StackCategory = {
   description:
-    'Da interface no Figma ao componente reutilizável e documentado, com consistência visual e facilidade de manutenção.',
+    'Da interface no Figma ao componente com facilidade de manutenção.',
   id: 'design',
   name: 'Design System & UI',
   techs: [{ icon: iconFigma, name: 'Figma' }],
@@ -91,7 +91,7 @@ const testing: StackCategory = {
 
 const databases: StackCategory = {
   description:
-    'Modelagem e persistência com bancos relacionais, NoSQL e serviços gerenciados.',
+    'Modelagem, integração, consultas e persistência de dados com bancos relacionais, NoSQL e serviços gerenciados.',
   id: 'databases',
   name: 'Bancos de dados',
   techs: [
@@ -119,12 +119,9 @@ const cloud: StackCategory = {
 
 const engineering: StackCategory = {
   badges: [
-    'Engenharia de Software',
-    'SOLID',
-    'Design Patterns',
-    'POO',
-    'Cibersegurança',
-    'Gestão de projetos',
+    'Patterns',
+    'Segurança',
+    'Gestão de Projetos',
   ],
   description:
     'Fundamentos de requisitos, arquitetura, qualidade, segurança e gestão aplicados ao ciclo de vida do software.',
@@ -140,18 +137,11 @@ const agile: StackCategory = {
   name: 'Metodologias ágeis',
 }
 
-/** Linhas lógicas (ordem de leitura no mobile) */
-const stackRows = [
+/** Linhas no desktop (3 colunas por linha, coluna central mais estreita) */
+export const stackRows = [
   [frontend, design, mobile],
   [backend, testing, databases],
   [cloud, agile, engineering],
-] as const
-
-/** Colunas do bento no desktop: esquerda | meio (mais estreita) | direita */
-export const stackColumns = [
-  { id: 'left', items: [frontend, backend, cloud] },
-  { id: 'center', items: [design, testing, agile] },
-  { id: 'right', items: [mobile, databases, engineering] },
 ] as const
 
 export const stackCategories = stackRows.flat()

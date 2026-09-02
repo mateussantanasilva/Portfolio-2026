@@ -1,33 +1,19 @@
 import { motion, useInView, useReducedMotion } from 'motion/react'
 import { useCallback, useRef, useState } from 'react'
+import { SectionDescription } from '@/components/reveal'
 import { SectionTitle } from '@/components/section-title'
 import { ShinySurface } from '@/components/ui/shiny-text'
 import { portfolio } from '@/data/portfolio'
-import { type StackCategory, stackCategories, stackColumns } from '@/data/stack'
+import { type StackCategory, stackCategories, stackRows } from '@/data/stack'
+import {
+  bubbleSpring,
+  BUBBLE_AFTER_CARD,
+  CARD_STAGGER,
+  cardSpring,
+  hoverSpring,
+  REVEAL_Y,
+} from '@/lib/motion'
 import { cn } from '@/lib/utils'
-
-const bubbleSpring = {
-  damping: 14,
-  mass: 0.65,
-  stiffness: 420,
-  type: 'spring' as const,
-}
-
-const cardSpring = {
-  damping: 22,
-  mass: 0.85,
-  stiffness: 260,
-  type: 'spring' as const,
-}
-
-const hoverSpring = {
-  damping: 28,
-  stiffness: 320,
-  type: 'spring' as const,
-}
-
-const CARD_STAGGER = 0.07
-const BUBBLE_AFTER_CARD = 0.45
 
 interface StackBentoCardProps {
   category: StackCategory
@@ -129,7 +115,7 @@ function TechBadges({
 
 function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
   const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { amount: 0.2, once: true })
+  const inView = useInView(ref, { amount: 0.15, once: true })
   const reduceMotion = useReducedMotion()
   const [isHovered, setIsHovered] = useState(false)
   const hasIcons = Boolean(category.techs?.length)
@@ -143,10 +129,10 @@ function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
       animate={
         reduceMotion || inView
           ? { opacity: 1, scale: 1, y: 0 }
-          : { opacity: 0, scale: 0.96, y: 20 }
+          : { opacity: 0, scale: 0.96, y: REVEAL_Y }
       }
       className={cn(
-        'group relative isolate flex flex-col gap-4 overflow-hidden rounded-3xl border border-portfolio-subtle p-4 transition-colors duration-500 md:p-8',
+        'group relative isolate flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-portfolio-subtle p-4 transition-colors duration-500 md:p-8',
         isHovered && 'border-foreground/10'
       )}
       initial={false}
@@ -180,7 +166,7 @@ function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
         spread={120}
       />
 
-      <div className="relative z-10 flex flex-col gap-4">
+      <div className="relative z-10 flex h-full flex-col gap-4">
         {hasIcons ? (
           <TechIcons
             category={category}
@@ -196,7 +182,7 @@ function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
           />
         ) : null}
 
-        <div className="flex flex-col gap-2">
+        <div className="mt-auto flex flex-col gap-2">
           <h3 className="font-heading font-medium text-foreground text-xl leading-tight md:text-2xl">
             {category.name}
           </h3>
@@ -222,9 +208,9 @@ export function FavouriteStack() {
       <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <SectionTitle>{stack.title}</SectionTitle>
-          <p className="max-w-md font-heading font-light text-foreground text-sm uppercase tracking-wide md:text-xl">
+          <SectionDescription titleLength={stack.title.length}>
             {stack.description}
-          </p>
+          </SectionDescription>
         </div>
 
         <div className="flex flex-col gap-4 md:hidden">
@@ -237,10 +223,13 @@ export function FavouriteStack() {
           ))}
         </div>
 
-        <div className="hidden grid-cols-[1fr_0.75fr_1fr] items-start gap-4 md:grid">
-          {stackColumns.map((column) => (
-            <div className="flex flex-col gap-4" key={column.id}>
-              {column.items.map((category) => {
+        <div className="hidden flex-col gap-4 md:flex">
+          {stackRows.map((row) => (
+            <div
+              className="grid grid-cols-[1fr_0.75fr_1fr] items-stretch gap-4"
+              key={row.map((category) => category.id).join('-')}
+            >
+              {row.map((category) => {
                 const index = cardIndex
                 cardIndex += 1
                 return (
