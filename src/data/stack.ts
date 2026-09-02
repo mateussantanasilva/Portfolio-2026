@@ -23,6 +23,7 @@ import iconTypescript from '@/assets/icons/TypeScript.png'
 
 export interface StackTech {
   icon: string
+  invertInDark?: boolean
   name: string
 }
 
@@ -41,7 +42,7 @@ const frontend: StackCategory = {
   name: 'Front-end',
   techs: [
     { icon: iconReact, name: 'React' },
-    { icon: iconNextjs, name: 'Next.js' },
+    { icon: iconNextjs, invertInDark: true, name: 'Next.js' },
     { icon: iconTypescript, name: 'TypeScript' },
     { icon: iconJavascript, name: 'JavaScript' },
     { icon: iconTailwind, name: 'Tailwind CSS' },
@@ -76,8 +77,8 @@ const backend: StackCategory = {
   techs: [
     { icon: iconNodejs, name: 'Node.js' },
     { icon: iconNestjs, name: 'Nest.js' },
-    { icon: iconExpress, name: 'Express' },
-    { icon: iconFastify, name: 'Fastify' },
+    { icon: iconExpress, invertInDark: true, name: 'Express' },
+    { icon: iconFastify, invertInDark: true, name: 'Fastify' },
   ],
 }
 
@@ -109,7 +110,7 @@ const cloud: StackCategory = {
   name: 'Cloud & DevOps',
   techs: [
     { icon: iconAzure, name: 'Azure' },
-    { icon: iconAws, name: 'AWS' },
+    { icon: iconAws, invertInDark: true, name: 'AWS' },
     { icon: iconGoogleCloud, name: 'Google Cloud' },
     { icon: iconDocker, name: 'Docker' },
     { icon: iconLinux, name: 'Linux' },
@@ -118,11 +119,7 @@ const cloud: StackCategory = {
 }
 
 const engineering: StackCategory = {
-  badges: [
-    'Patterns',
-    'Segurança',
-    'Gestão de Projetos',
-  ],
+  badges: ['Patterns', 'Segurança', 'Gestão de Projetos'],
   description:
     'Fundamentos de requisitos, arquitetura, qualidade, segurança e gestão aplicados ao ciclo de vida do software.',
   id: 'engineering',

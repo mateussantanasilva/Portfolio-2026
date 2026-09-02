@@ -68,7 +68,7 @@ export function Timeline({ accent = false, children }: TimelineProps) {
             aria-hidden
             className={
               accent
-                ? 'absolute top-2 bottom-2 left-0 w-0.5 origin-top -translate-x-1/2 bg-linear-to-b from-portfolio-navy via-35% via-portfolio-navy to-foreground'
+                ? 'absolute top-2 bottom-2 left-0 w-0.5 origin-top -translate-x-1/2 bg-linear-to-b from-portfolio-navy via-35% via-portfolio-navy to-foreground dark:from-foreground dark:via-foreground dark:to-foreground'
                 : 'absolute top-2 bottom-2 left-0 w-px origin-top -translate-x-1/2 bg-foreground'
             }
             style={{ scaleY: reduceMotion ? 1 : scaleY }}
@@ -155,7 +155,7 @@ export function TimelineItem({
         aria-hidden
         className={
           highlight
-            ? 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-portfolio-navy bg-background md:size-4'
+            ? 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-portfolio-navy bg-background dark:border-foreground md:size-4'
             : 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-foreground bg-background md:size-4'
         }
         initial={false}
@@ -164,7 +164,7 @@ export function TimelineItem({
         {highlight && !reduceMotion ? (
           <motion.span
             animate={{ opacity: [0.45, 0.12, 0.45], scale: [1, 2.2, 1] }}
-            className="absolute inset-0 rounded-full bg-portfolio-navy"
+            className="absolute inset-0 rounded-full bg-portfolio-navy dark:bg-foreground"
             transition={{
               duration: 2,
               ease: 'easeInOut',
@@ -176,7 +176,7 @@ export function TimelineItem({
           animate={{ opacity: reduceMotion || filled ? 1 : 0 }}
           className={
             highlight
-              ? 'relative size-2 rounded-full bg-portfolio-navy'
+              ? 'relative size-2 rounded-full bg-portfolio-navy dark:bg-foreground'
               : 'relative size-2 rounded-full bg-foreground'
           }
           initial={false}
@@ -185,9 +185,7 @@ export function TimelineItem({
       </motion.span>
       <motion.div
         animate={
-          contentRevealed
-            ? { opacity: 1, x: 0 }
-            : { opacity: 0, x: -REVEAL_X }
+          contentRevealed ? { opacity: 1, x: 0 } : { opacity: 0, x: -REVEAL_X }
         }
         initial={false}
         transition={reduceMotion ? { duration: 0 } : revealSpring}

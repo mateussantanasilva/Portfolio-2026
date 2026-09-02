@@ -124,7 +124,7 @@ export function FloatingDock({ items, className }: FloatingDockProps) {
   return (
     <motion.div
       className={cn(
-        'mx-auto flex h-16 items-end gap-3 rounded-3xl bg-[#171717] px-3 pb-3 shadow-lg sm:gap-4 sm:px-4',
+        'mx-auto flex h-16 items-end gap-3 rounded-3xl border border-white/10 bg-[#171717] px-3 pb-3 shadow-lg sm:gap-4 sm:px-4',
         className
       )}
       onMouseLeave={handleMouseLeave}

@@ -24,7 +24,7 @@ export function HeroSocials() {
                 >
                   <img
                     alt=""
-                    className="size-5 object-contain md:size-[1.35rem]"
+                    className="size-5 object-contain md:size-[1.35rem] dark:brightness-0 dark:invert"
                     height={22}
                     src={social.icon}
                     width={22}

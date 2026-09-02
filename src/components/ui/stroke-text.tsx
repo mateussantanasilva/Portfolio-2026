@@ -1,9 +1,5 @@
-import {
-  motion,
-  useReducedMotion,
-  type Transition,
-} from 'motion/react'
-import { useId, useMemo, type CSSProperties } from 'react'
+import { motion, type Transition, useReducedMotion } from 'motion/react'
+import { type CSSProperties, useId, useMemo } from 'react'
 import { cn } from '@/lib/utils'
 
 export type StrokeTextFillMode = 'wipe' | 'fade' | 'none'
@@ -29,21 +25,21 @@ function getStrokePaths(letter: StrokeTextLetter): string[] {
 }
 
 export interface StrokeTextProps {
-  letters: readonly StrokeTextLetter[]
-  viewBox: string
-  width: number
+  className?: string
+  drawDuration?: number
+  fillColor?: string
+  fillDelay?: number
+  fillMode?: StrokeTextFillMode
   height: number
   label: string
-  strokeColor?: string
-  fillColor?: string
-  strokeWidth?: number
-  drawDuration?: number
-  fillDelay?: number
-  stagger?: number
-  fillMode?: StrokeTextFillMode
+  letters: readonly StrokeTextLetter[]
   reverse?: boolean
-  className?: string
+  stagger?: number
+  strokeColor?: string
+  strokeWidth?: number
   style?: CSSProperties
+  viewBox: string
+  width: number
 }
 
 export function StrokeText({

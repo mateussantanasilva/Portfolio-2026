@@ -6,7 +6,9 @@ import {
   type ReactNode,
   type RefObject,
   useEffect,
+  useMemo,
   useRef,
+  useSyncExternalStore,
 } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -104,12 +106,58 @@ const THEMES: Record<
     tintOpacity: 1,
   },
   outline: {
-    baseColor: '#8a8a8a',
-    lineColor: '#171717',
-    textColor: '#141414',
+    baseColor: 'var(--specular-outline-base)',
+    lineColor: 'var(--specular-outline-line)',
+    textColor: 'var(--specular-outline-text)',
     tint: '#ffffff',
     tintOpacity: 0,
   },
+}
+
+function readCssColor(variable: string, fallback: string) {
+  if (typeof document === 'undefined') return fallback
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim()
+  return value || fallback
+}
+
+function subscribeToTheme(callback: () => void) {
+  const observer = new MutationObserver(callback)
+  observer.observe(document.documentElement, {
+    attributeFilter: ['class'],
+    attributes: true,
+  })
+  return () => observer.disconnect()
+}
+
+function useThemeSnapshot() {
+  return useSyncExternalStore(
+    subscribeToTheme,
+    () => document.documentElement.classList.contains('dark'),
+    () => false
+  )
+}
+
+function resolveThemeTokens(theme: SpecularTheme, isDark: boolean) {
+  const tokens = THEMES[theme]
+  if (theme !== 'outline') return tokens
+
+  return {
+    ...tokens,
+    baseColor: readCssColor(
+      '--specular-outline-base',
+      isDark ? '#9ca3af' : '#8a8a8a'
+    ),
+    lineColor: readCssColor(
+      '--specular-outline-line',
+      isDark ? '#e5e5e5' : '#171717'
+    ),
+    textColor: readCssColor(
+      '--specular-outline-text',
+      isDark ? '#f5f5f5' : '#141414'
+    ),
+  }
 }
 
 const VERT = `#version 300 es
@@ -199,7 +247,11 @@ export default function SpecularButton({
   target,
 }: SpecularButtonProps) {
   const reduceMotion = useReducedMotion()
-  const themeTokens = THEMES[theme]
+  const isDark = useThemeSnapshot()
+  const themeTokens = useMemo(
+    () => resolveThemeTokens(theme, isDark),
+    [isDark, theme]
+  )
   const resolvedTint = tint ?? themeTokens.tint
   const resolvedTintOpacity = tintOpacity ?? themeTokens.tintOpacity
   const resolvedTextColor = textColor ?? themeTokens.textColor
@@ -381,11 +433,11 @@ export default function SpecularButton({
       disposed = true
       cleanupGl?.()
     }
-  }, [reduceMotion])
+  }, [reduceMotion, resolvedBaseColor, resolvedLineColor])
 
   const sharedClassName = cn(
     'relative m-0 inline-flex cursor-pointer items-center justify-center border-none font-heading font-medium leading-none tracking-[0.01em] outline-none transition-transform duration-150 [backdrop-filter:blur(var(--sb-blur))] [background:color-mix(in_srgb,var(--sb-tint)_calc(var(--sb-tint-opacity)_*_100%),transparent)] [border-radius:var(--sb-radius)] [color:var(--sb-text-color)] focus-visible:outline-2 focus-visible:outline-offset-[3px] active:scale-[0.97] disabled:cursor-default disabled:opacity-55 disabled:active:scale-100',
-    theme === 'outline' && 'shadow-none ring-1 ring-[#aeaeae]',
+    theme === 'outline' && 'shadow-none ring-1 ring-border',
     theme !== 'outline' &&
       'shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_24px_rgba(0,0,0,0.18)]',
     SIZES[size],

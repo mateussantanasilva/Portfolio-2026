@@ -2,6 +2,18 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
+    <script>
+    'use strict'
+    ;(() => {
+      const stored = localStorage.getItem('theme')
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark')
+      }
+    })()
+    </script>
     <link href="/favicon.svg" rel="icon" type="image/svg+xml">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Mateus Santana | Desenvolvedor de Software</title>

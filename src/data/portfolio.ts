@@ -107,7 +107,6 @@ export const portfolio = {
     title: '/Experiência',
   },
   hero: {
-    bio: 'Minha atuação é focada em front-end, complementada por experiência em aplicações mobile e conhecimentos de back-end.',
     portrait: heroPortrait,
     title: 'Desenvolvedor',
   },

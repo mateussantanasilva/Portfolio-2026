@@ -2,19 +2,22 @@ import { ArrowDown } from 'lucide-react'
 import { motion, useReducedMotion } from 'motion/react'
 import { HeroSocials } from '@/components/hero-socials'
 import { BubbleEntrance } from '@/components/reveal'
+import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
 import SpecularButton from '@/components/ui/specular-button'
 import { StrokeText } from '@/components/ui/stroke-text'
 import { heroTitleMark } from '@/data/hero-title-mark'
 import { portfolio } from '@/data/portfolio'
+import { useTheme } from '@/providers/theme-provider'
 
 export function Hero() {
   const { brand, hero } = portfolio
   const reduceMotion = useReducedMotion()
+  const { setTheme, theme } = useTheme()
   const title = hero.title.toUpperCase()
 
   return (
     <section
-      className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#D9DDE0]"
+      className="relative flex h-dvh w-full flex-col overflow-hidden bg-portfolio-hero-bg"
       id="inicio"
     >
       <div
@@ -31,7 +34,7 @@ export function Hero() {
       </div>
 
       <div className="container-portfolio relative z-10 flex flex-1 flex-col py-8">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
           <motion.p
             animate={{ opacity: 1, y: 0 }}
             className="font-medium text-base text-foreground sm:text-lg md:text-xl"
@@ -40,14 +43,13 @@ export function Hero() {
           >
             {brand.handle}
           </motion.p>
-          <motion.p
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-xl font-light text-foreground text-sm sm:max-w-md sm:text-right sm:text-base md:text-xl"
-            initial={reduceMotion ? false : { opacity: 0, y: -12 }}
-            transition={{ delay: 0.08, duration: 0.4, ease: 'easeOut' }}
-          >
-            {hero.bio}
-          </motion.p>
+          <BubbleEntrance className="flex sm:justify-end" delay={0.08}>
+            <AnimatedThemeToggler
+              onThemeChange={setTheme}
+              specular
+              theme={theme}
+            />
+          </BubbleEntrance>
         </div>
       </div>
 

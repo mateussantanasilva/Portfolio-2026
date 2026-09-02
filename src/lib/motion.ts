@@ -46,6 +46,10 @@ export const revealFadeLeft = {
 }
 
 /** Descrição entra um pouco antes do typing terminar, para não parecer travada */
-export function typingDelay(titleLength: number, buffer = 0.05, fraction = 0.55) {
+export function typingDelay(
+  titleLength: number,
+  buffer = 0.05,
+  fraction = 0.55
+) {
   return (titleLength * CHAR_MS * fraction) / 1000 + buffer
 }

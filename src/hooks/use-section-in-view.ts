@@ -1,8 +1,4 @@
-import {
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-} from 'motion/react'
+import { useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react'
 import { type RefObject, useEffect, useState } from 'react'
 
 /** Dispara quando a seção entra de fato na área visível (não só encosta no rodapé da viewport) */

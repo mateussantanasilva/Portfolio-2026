@@ -1,9 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight, ArrowUpRight, Mouse } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
-import { type InputHTMLAttributes, type TextareaHTMLAttributes, useId } from 'react'
+import {
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+  useId,
+} from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { BrandSurface } from '@/components/brand-surface'
 import { Reveal } from '@/components/reveal'
 import ScrollExpand from '@/components/scroll-expand'
 import SpecularButton from '@/components/ui/specular-button'
@@ -24,27 +29,6 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>
 
-function ContactSurface() {
-  return (
-    <div aria-hidden className="absolute inset-0">
-      <div className="absolute inset-0 bg-portfolio-navy" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_10%_25%,rgba(69,92,233,0.18),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_90%_75%,rgba(15,26,46,0.65),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(165deg,rgba(255,255,255,0.04)_0%,transparent_45%,rgba(0,0,0,0.35)_100%)]" />
-      <div
-        className="absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            'radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)',
-          backgroundSize: '16px 16px',
-          maskImage:
-            'linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5))',
-        }}
-      />
-    </div>
-  )
-}
-
 const fieldControlClassName = cn(
   'w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 font-heading text-base text-white outline-none transition-colors duration-300 placeholder:text-white/35 md:px-5 md:py-3.5 md:text-lg',
   'focus-visible:border-white/30 focus-visible:bg-white/8'
@@ -56,19 +40,14 @@ interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
 }
 
-interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface FormTextareaProps
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string
   error?: string
   label: string
 }
 
-function FormField({
-  className,
-  error,
-  id,
-  label,
-  ...props
-}: FormFieldProps) {
+function FormField({ className, error, id, label, ...props }: FormFieldProps) {
   const generatedId = useId()
   const fieldId = id ?? generatedId
   const errorId = `${fieldId}-error`
@@ -76,7 +55,7 @@ function FormField({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <label
-        className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm"
+        className="font-mono text-white text-xs uppercase tracking-wider md:text-sm"
         htmlFor={fieldId}
       >
         {label}
@@ -114,7 +93,7 @@ function FormTextarea({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <label
-        className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm"
+        className="font-mono text-white text-xs uppercase tracking-wider md:text-sm"
         htmlFor={fieldId}
       >
         {label}
@@ -180,14 +159,14 @@ export function ContactCta() {
   const expandEnabled = !reduceMotion
 
   return (
-    <section className="container-portfolio" id="contato">
+    <section className="container-portfolio section-pt-tight section-pb-tight" id="contato">
       <ScrollExpand
         enabled={expandEnabled}
         endHeight={84}
         endRadius={40}
         endWidth={100}
         holdDistance={1}
-        media={<ContactSurface />}
+        media={<BrandSurface />}
         mediaZoom={1.06}
         overlayClassName="items-stretch justify-start overflow-hidden p-0 text-left"
         overlayScrim={0.15}
@@ -306,44 +285,44 @@ export function ContactCta() {
                 noValidate
                 onSubmit={onSubmit}
               >
-              <div className="flex flex-col gap-5 md:gap-6">
-                <FormField
-                  autoComplete="name"
-                  error={errors.name?.message}
-                  label={contact.form.nameLabel}
-                  placeholder={contact.form.namePlaceholder}
-                  type="text"
-                  {...nameField}
-                />
+                <div className="flex flex-col gap-5 md:gap-6">
+                  <FormField
+                    autoComplete="name"
+                    error={errors.name?.message}
+                    label={contact.form.nameLabel}
+                    placeholder={contact.form.namePlaceholder}
+                    type="text"
+                    {...nameField}
+                  />
 
-                <FormField
-                  autoComplete="tel email"
-                  error={errors.contact?.message}
-                  label={contact.form.contactLabel}
-                  placeholder={contact.form.contactPlaceholder}
-                  type="text"
-                  {...contactField}
-                />
+                  <FormField
+                    autoComplete="tel email"
+                    error={errors.contact?.message}
+                    label={contact.form.contactLabel}
+                    placeholder={contact.form.contactPlaceholder}
+                    type="text"
+                    {...contactField}
+                  />
 
-                <FormTextarea
-                  error={errors.message?.message}
-                  label={contact.form.messageLabel}
-                  placeholder={contact.form.messagePlaceholder}
-                  rows={5}
-                  {...messageField}
-                />
-              </div>
+                  <FormTextarea
+                    error={errors.message?.message}
+                    label={contact.form.messageLabel}
+                    placeholder={contact.form.messagePlaceholder}
+                    rows={5}
+                    {...messageField}
+                  />
+                </div>
 
-              <SpecularButton
-                className="group self-end"
-                disabled={isSubmitting}
-                size="md"
-                theme="light"
-                type="submit"
-              >
-                {contact.cta}
-                <ArrowRight className="size-4 transition-transform duration-300 group-hover:-rotate-45" />
-              </SpecularButton>
+                <SpecularButton
+                  className="group self-end"
+                  disabled={isSubmitting}
+                  size="md"
+                  theme="light"
+                  type="submit"
+                >
+                  {contact.cta}
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:-rotate-45" />
+                </SpecularButton>
               </form>
             </Reveal>
           </div>

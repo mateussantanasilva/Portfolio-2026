@@ -6,8 +6,8 @@ import { ShinySurface } from '@/components/ui/shiny-text'
 import { portfolio } from '@/data/portfolio'
 import { type StackCategory, stackCategories, stackRows } from '@/data/stack'
 import {
-  bubbleSpring,
   BUBBLE_AFTER_CARD,
+  bubbleSpring,
   CARD_STAGGER,
   cardSpring,
   hoverSpring,
@@ -45,7 +45,7 @@ function TechIcons({
               : { opacity: 0, scale: 0 }
           }
           className={cn(
-            'relative flex size-12 items-center justify-center rounded-full border border-portfolio-subtle bg-white p-2 shadow-sm transition-[margin,box-shadow] duration-300 ease-out',
+            'relative flex size-12 items-center justify-center rounded-full border border-portfolio-subtle bg-card p-2 shadow-sm transition-[margin,box-shadow] duration-300 ease-out',
             index > 0 && '-ml-4 max-md:mr-2 max-md:ml-0',
             'group-hover:mr-2 group-hover:ml-0 group-hover:shadow-md',
             index === 0 && 'group-hover:mr-2 max-md:mr-2'
@@ -65,7 +65,10 @@ function TechIcons({
         >
           <img
             alt=""
-            className="size-8 object-contain"
+            className={cn(
+              'size-8 object-contain',
+              tech.invertInDark && 'dark:brightness-0 dark:invert'
+            )}
             height={32}
             src={tech.icon}
             width={32}
@@ -94,7 +97,7 @@ function TechBadges({
               ? { opacity: 1, scale: 1 }
               : { opacity: 0, scale: 0 }
           }
-          className="inline-flex items-center rounded-full border border-portfolio-subtle bg-white/80 px-4 py-2 font-heading text-foreground text-xs md:text-sm"
+          className="inline-flex items-center rounded-full border border-portfolio-subtle bg-card/80 px-4 py-2 font-heading text-foreground text-xs md:text-sm"
           initial={false}
           key={`${id}-${badge}`}
           transition={
@@ -154,14 +157,14 @@ function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
         aria-hidden
         className={cn(
           'pointer-events-none absolute inset-0 rounded-[inherit] transition-colors duration-500',
-          isHovered ? 'bg-white' : 'bg-portfolio-surface'
+          isHovered ? 'bg-card' : 'bg-portfolio-surface'
         )}
       />
 
       <ShinySurface
         active={isHovered}
-        color="#f3f3f3"
-        shineColor="#ffffff"
+        color="var(--portfolio-shine)"
+        shineColor="var(--portfolio-shine-highlight)"
         speed={1.8}
         spread={120}
       />
@@ -202,7 +205,7 @@ export function FavouriteStack() {
 
   return (
     <section
-      className="container-portfolio pb-28 md:pb-32 lg:pb-40"
+      className="container-portfolio section-pt-tight section-pb"
       id="habilidades"
     >
       <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">

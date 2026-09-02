@@ -1,17 +1,17 @@
 import {
   type HTMLMotionProps,
   motion,
+  type UseInViewOptions,
   useInView,
   useReducedMotion,
-  type UseInViewOptions,
 } from 'motion/react'
 import { Children, type ReactNode, useRef, useState } from 'react'
 import {
+  bubbleSpring,
   CARD_STAGGER,
   cardSpring,
   REVEAL_DURATION,
   REVEAL_Y,
-  bubbleSpring,
   revealSpring,
   typingDelay,
 } from '@/lib/motion'
@@ -19,7 +19,8 @@ import { cn } from '@/lib/utils'
 
 type MotionTag = keyof typeof motion
 
-interface RevealProps extends Omit<HTMLMotionProps<'div'>, 'initial' | 'animate'> {
+interface RevealProps
+  extends Omit<HTMLMotionProps<'div'>, 'initial' | 'animate'> {
   amount?: number
   as?: MotionTag
   delay?: number
@@ -54,20 +55,16 @@ export function Reveal({
 
   return (
     <Component
-      animate={
-        visible
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, x, y }
-      }
+      animate={visible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
       className={className}
       initial={false}
       ref={ref}
       transition={
         reduceMotion
           ? { duration: 0 }
-          : x !== 0
-            ? { ...revealSpring, delay }
-            : { delay, duration, ease: 'easeOut' }
+          : x === 0
+            ? { delay, duration, ease: 'easeOut' }
+            : { ...revealSpring, delay }
       }
       {...props}
     >
@@ -179,7 +176,8 @@ export function SectionDescription({
   )
 }
 
-interface RevealCardProps extends Omit<HTMLMotionProps<'article'>, 'initial' | 'animate'> {
+interface RevealCardProps
+  extends Omit<HTMLMotionProps<'article'>, 'initial' | 'animate'> {
   amount?: number
   delay?: number
   index?: number

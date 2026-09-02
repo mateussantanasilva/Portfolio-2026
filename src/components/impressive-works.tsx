@@ -38,8 +38,8 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
     <motion.div
       animate={
         revealed
-          ? { opacity: 1, scale: 1, y: 0 }
-          : { opacity: 0, scale: 0.96, y: REVEAL_Y }
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: REVEAL_Y }
       }
       className="h-full"
       initial={false}
@@ -53,7 +53,7 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
       }
     >
       <motion.a
-        className="group relative isolate block aspect-[16/10] overflow-hidden rounded-3xl bg-[#111] md:aspect-[16/11]"
+        className="group relative isolate block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#111] backface-hidden will-change-transform md:aspect-[16/11]"
         href={project.href}
         initial={false}
         rel="noopener noreferrer"
@@ -102,7 +102,7 @@ export function ImpressiveWorks() {
 
   return (
     <section
-      className="container-portfolio pt-28 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32"
+      className="container-portfolio section-pt section-pb-tight"
       id="projetos"
     >
       <div className="flex flex-col items-center gap-8 md:gap-12 lg:gap-16">
@@ -139,7 +139,7 @@ export function ImpressiveWorks() {
             >
               <img
                 alt=""
-                className="size-5 object-contain"
+                className="size-5 object-contain dark:brightness-0 dark:invert"
                 height={20}
                 src={iconGithub}
                 width={20}
