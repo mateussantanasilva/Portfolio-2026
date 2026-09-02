@@ -1,16 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight, ArrowUpRight, Mouse } from 'lucide-react'
-import { motion, useReducedMotion } from 'motion/react'
-import {
-  type FocusEvent,
-  type InputHTMLAttributes,
-  useCallback,
-  useState,
-} from 'react'
+import { useReducedMotion } from 'motion/react'
+import { type InputHTMLAttributes, type TextareaHTMLAttributes, useId } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { Reveal } from '@/components/reveal'
 import ScrollExpand from '@/components/scroll-expand'
-import { Separator } from '@/components/ui/separator'
 import SpecularButton from '@/components/ui/specular-button'
 import { portfolio } from '@/data/portfolio'
 import { cn } from '@/lib/utils'
@@ -20,7 +15,10 @@ const contactFormSchema = z.object({
     .string()
     .trim()
     .min(5, 'Informe um e-mail ou WhatsApp para retorno'),
-  intent: z.string().trim().min(3, 'Conte o que você está buscando'),
+  message: z
+    .string()
+    .trim()
+    .min(10, 'Escreva uma mensagem com pelo menos 10 caracteres'),
   name: z.string().trim().min(2, 'Informe seu nome'),
 })
 
@@ -47,69 +45,97 @@ function ContactSurface() {
   )
 }
 
-function InlineField({
+const fieldControlClassName = cn(
+  'w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 font-heading text-base text-white outline-none transition-colors duration-300 placeholder:text-white/35 md:px-5 md:py-3.5 md:text-lg',
+  'focus-visible:border-white/30 focus-visible:bg-white/8'
+)
+
+interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  className?: string
+  error?: string
+  label: string
+}
+
+interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className?: string
+  error?: string
+  label: string
+}
+
+function FormField({
   className,
-  invalid,
-  onBlur,
-  onFocus,
-  wrapperClassName,
+  error,
+  id,
+  label,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
-  invalid?: boolean
-  wrapperClassName?: string
-}) {
-  const [focused, setFocused] = useState(false)
-  const reduceMotion = useReducedMotion()
-
-  const handleBlur = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      setFocused(false)
-      onBlur?.(event)
-    },
-    [onBlur]
-  )
-
-  const handleFocus = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      setFocused(true)
-      onFocus?.(event)
-    },
-    [onFocus]
-  )
-
-  const focusTransition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.32, ease: 'easeOut' as const }
+}: FormFieldProps) {
+  const generatedId = useId()
+  const fieldId = id ?? generatedId
+  const errorId = `${fieldId}-error`
 
   return (
-    <span
-      className={cn(
-        'relative mx-1 inline-flex max-w-full items-center py-1',
-        wrapperClassName
-      )}
-    >
-      <motion.span
-        animate={{
-          opacity: focused ? 1 : 0,
-          scale: focused ? 1 : 0.94,
-        }}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 origin-center rounded-md bg-white/10"
-        initial={false}
-        transition={focusTransition}
-      />
+    <div className={cn('flex flex-col gap-2', className)}>
+      <label
+        className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm"
+        htmlFor={fieldId}
+      >
+        {label}
+      </label>
       <input
         {...props}
+        aria-describedby={error ? errorId : undefined}
+        aria-invalid={Boolean(error)}
         className={cn(
-          'relative inline-block w-full min-w-32 border-0 border-b bg-transparent px-2 py-0 font-heading text-lg text-white leading-snug outline-none transition-colors duration-300 ease-out placeholder:text-white/40 placeholder:uppercase md:min-w-40 md:text-xl lg:min-w-48 lg:text-2xl',
-          focused ? 'border-b-transparent' : 'border-white/25',
-          invalid && !focused && 'border-red-400',
-          className
+          fieldControlClassName,
+          error && 'border-red-400/80 focus-visible:border-red-400/80'
         )}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
+        id={fieldId}
       />
-    </span>
+      {error ? (
+        <p className="font-mono text-red-400 text-sm" id={errorId}>
+          {error}
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
+function FormTextarea({
+  className,
+  error,
+  id,
+  label,
+  ...props
+}: FormTextareaProps) {
+  const generatedId = useId()
+  const fieldId = id ?? generatedId
+  const errorId = `${fieldId}-error`
+
+  return (
+    <div className={cn('flex flex-col gap-2', className)}>
+      <label
+        className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm"
+        htmlFor={fieldId}
+      >
+        {label}
+      </label>
+      <textarea
+        {...props}
+        aria-describedby={error ? errorId : undefined}
+        aria-invalid={Boolean(error)}
+        className={cn(
+          fieldControlClassName,
+          'min-h-36 resize-none leading-relaxed md:min-h-40',
+          error && 'border-red-400/80 focus-visible:border-red-400/80'
+        )}
+        id={fieldId}
+      />
+      {error ? (
+        <p className="font-mono text-red-400 text-sm" id={errorId}>
+          {error}
+        </p>
+      ) : null}
+    </div>
   )
 }
 
@@ -118,7 +144,7 @@ function buildWhatsAppMessage(values: ContactFormValues): string {
     'Olá, Mateus! Conheci seu trabalho pelo portfólio e gostaria de conversar.',
     '',
     `*Nome:* ${values.name}`,
-    `*Assunto:* ${values.intent}`,
+    `*Mensagem:* ${values.message}`,
     `*Contato para retorno:* ${values.contact}`,
   ].join('\n')
 }
@@ -134,7 +160,7 @@ export function ContactCta() {
   } = useForm<ContactFormValues>({
     defaultValues: {
       contact: '',
-      intent: '',
+      message: '',
       name: '',
     },
     resolver: zodResolver(contactFormSchema),
@@ -149,10 +175,8 @@ export function ContactCta() {
   })
 
   const nameField = register('name')
-  const intentField = register('intent')
+  const messageField = register('message')
   const contactField = register('contact')
-
-  const hasErrors = Boolean(errors.name || errors.intent || errors.contact)
   const expandEnabled = !reduceMotion
 
   return (
@@ -162,12 +186,12 @@ export function ContactCta() {
         endHeight={84}
         endRadius={40}
         endWidth={100}
-        holdDistance={0.35}
+        holdDistance={1}
         media={<ContactSurface />}
         mediaZoom={1.06}
         overlayClassName="items-stretch justify-start overflow-hidden p-0 text-left"
         overlayScrim={0.15}
-        scrollDistance={1}
+        scrollDistance={1.2}
         smoothing={0}
         startHeight={48}
         startRadius={40}
@@ -194,149 +218,135 @@ export function ContactCta() {
         }
         useWindowScroll
       >
-        <div className="flex min-h-full w-full flex-col justify-center gap-6 px-6 py-6 sm:px-8 md:gap-8 md:px-10 md:py-8 lg:gap-10 lg:px-12 lg:py-10">
-          <div className="flex w-full flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <h2 className="font-heading font-medium text-3xl text-white leading-none tracking-tight md:text-4xl lg:text-5xl">
-              {contact.headline}
-            </h2>
-            <p className="max-w-md font-heading font-light text-sm text-white/60 uppercase tracking-wide md:text-xl">
-              {contact.subtitle}
-            </p>
-          </div>
+        <div className="flex min-h-full w-full flex-col justify-center px-6 py-6 sm:px-8 md:px-10 md:py-8 lg:px-12 lg:py-10">
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+            <div className="flex flex-col gap-8 md:gap-10">
+              <Reveal amount={0.15}>
+                <div className="flex flex-col gap-4">
+                  <h2 className="font-heading font-medium text-3xl text-white leading-none tracking-tight md:text-4xl lg:text-5xl">
+                    {contact.headline}
+                  </h2>
+                  <p className="max-w-xl font-heading font-light text-sm text-white/60 uppercase tracking-wide md:text-lg lg:text-xl">
+                    {contact.subtitle}
+                  </p>
+                </div>
+              </Reveal>
 
-          <form
-            className="flex w-full min-w-0 flex-col gap-6 md:gap-8"
-            noValidate
-            onSubmit={onSubmit}
-          >
-            <div
-              aria-label="Mensagem de contato"
-              className="flex w-full flex-col gap-2 font-heading text-white text-xl leading-snug md:gap-3 md:text-2xl lg:text-3xl"
-              role="group"
-            >
-              <p className="flex flex-wrap items-baseline gap-x-1">
-                <span>Oi! Meu nome é </span>
-                <InlineField
-                  aria-invalid={Boolean(errors.name)}
-                  aria-label="Seu nome"
-                  invalid={Boolean(errors.name)}
+              <Reveal amount={0.12} delay={0.06}>
+                <div className="flex flex-col gap-6 md:gap-8">
+                  <div>
+                    <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
+                      {contact.emailLabel}
+                    </p>
+                    <a
+                      className="mt-2 block break-all font-heading text-base text-white transition-opacity hover:opacity-70 md:text-lg"
+                      href={`mailto:${contact.email}`}
+                    >
+                      {contact.email}
+                    </a>
+                  </div>
+                  <div>
+                    <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
+                      {contact.phoneLabel}
+                    </p>
+                    <a
+                      className="mt-2 block font-heading text-base text-white transition-opacity hover:opacity-70 md:text-lg"
+                      href={contact.whatsappUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {contact.phone}
+                    </a>
+                  </div>
+                  <div>
+                    <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
+                      {contact.locationLabel}
+                    </p>
+                    <p className="mt-2 font-heading text-base text-white md:text-lg">
+                      {contact.location}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              <ul className="flex flex-wrap items-center gap-2">
+                {contact.socials.map((social, index) => (
+                  <Reveal
+                    amount={0.15}
+                    as="li"
+                    delay={0.12 + index * 0.04}
+                    key={social.label}
+                  >
+                    <SpecularButton
+                      className="group"
+                      href={social.href}
+                      rel="noopener noreferrer"
+                      size="sm"
+                      target="_blank"
+                      theme="ghost"
+                    >
+                      <img
+                        alt=""
+                        className="size-5 object-contain brightness-0 invert"
+                        height={20}
+                        src={social.icon}
+                        width={20}
+                      />
+                      {social.label}
+                      <ArrowUpRight className="size-4 opacity-70 transition-transform duration-300 group-hover:-rotate-45 group-hover:opacity-100" />
+                    </SpecularButton>
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+
+            <Reveal amount={0.12} delay={0.1}>
+              <form
+                className="flex w-full min-w-0 flex-col gap-6 md:gap-8 lg:pt-2"
+                noValidate
+                onSubmit={onSubmit}
+              >
+              <div className="flex flex-col gap-5 md:gap-6">
+                <FormField
+                  autoComplete="name"
+                  error={errors.name?.message}
+                  label={contact.form.nameLabel}
                   placeholder={contact.form.namePlaceholder}
                   type="text"
-                  wrapperClassName="min-w-32 flex-1 md:min-w-40 lg:min-w-48"
                   {...nameField}
                 />
-              </p>
 
-              <p className="flex flex-wrap items-baseline gap-x-1">
-                <span>e gostaria de conversar sobre </span>
-                <InlineField
-                  aria-invalid={Boolean(errors.intent)}
-                  aria-label="O que você está buscando"
-                  invalid={Boolean(errors.intent)}
-                  placeholder={contact.form.intentPlaceholder}
-                  type="text"
-                  wrapperClassName="min-w-32 flex-1 md:min-w-40 lg:min-w-48"
-                  {...intentField}
-                />
-                <span>.</span>
-              </p>
-
-              <p className="flex flex-wrap items-baseline gap-x-1">
-                <span>Você pode me responder por </span>
-                <InlineField
-                  aria-invalid={Boolean(errors.contact)}
-                  aria-label="E-mail ou WhatsApp para retorno"
-                  invalid={Boolean(errors.contact)}
+                <FormField
+                  autoComplete="tel email"
+                  error={errors.contact?.message}
+                  label={contact.form.contactLabel}
                   placeholder={contact.form.contactPlaceholder}
                   type="text"
-                  wrapperClassName="min-w-32 flex-1 md:min-w-40 lg:min-w-48"
                   {...contactField}
                 />
-                <span>.</span>
-              </p>
-            </div>
 
-            {hasErrors ? (
-              <ul className="space-y-1 font-mono text-red-400 text-sm">
-                {errors.name ? <li>{errors.name.message}</li> : null}
-                {errors.intent ? <li>{errors.intent.message}</li> : null}
-                {errors.contact ? <li>{errors.contact.message}</li> : null}
-              </ul>
-            ) : null}
+                <FormTextarea
+                  error={errors.message?.message}
+                  label={contact.form.messageLabel}
+                  placeholder={contact.form.messagePlaceholder}
+                  rows={5}
+                  {...messageField}
+                />
+              </div>
 
-            <SpecularButton
-              className="group self-end"
-              disabled={isSubmitting}
-              size="md"
-              theme="light"
-              type="submit"
-            >
-              {contact.cta}
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:-rotate-45" />
-            </SpecularButton>
-          </form>
-
-          <Separator className="bg-white/10" />
-
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-            <div>
-              <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
-                {contact.emailLabel}
-              </p>
-              <a
-                className="mt-2 block break-all font-heading text-base text-white transition-opacity hover:opacity-70 md:text-lg"
-                href={`mailto:${contact.email}`}
+              <SpecularButton
+                className="group self-end"
+                disabled={isSubmitting}
+                size="md"
+                theme="light"
+                type="submit"
               >
-                {contact.email}
-              </a>
-            </div>
-            <div>
-              <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
-                {contact.phoneLabel}
-              </p>
-              <a
-                className="mt-2 block font-heading text-base text-white transition-opacity hover:opacity-70 md:text-lg"
-                href={contact.whatsappUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {contact.phone}
-              </a>
-            </div>
-            <div>
-              <p className="font-mono text-white/45 text-xs uppercase tracking-wider md:text-sm">
-                {contact.locationLabel}
-              </p>
-              <p className="mt-2 font-heading text-base text-white md:text-lg">
-                {contact.location}
-              </p>
-            </div>
+                {contact.cta}
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:-rotate-45" />
+              </SpecularButton>
+              </form>
+            </Reveal>
           </div>
-
-          <ul className="flex flex-wrap items-center gap-2">
-            {contact.socials.map((social) => (
-              <li key={social.label}>
-                <SpecularButton
-                  className="group"
-                  href={social.href}
-                  rel="noopener noreferrer"
-                  size="sm"
-                  target="_blank"
-                  theme="ghost"
-                >
-                  <img
-                    alt=""
-                    className="size-5 object-contain brightness-0 invert"
-                    height={20}
-                    src={social.icon}
-                    width={20}
-                  />
-                  {social.label}
-                  <ArrowUpRight className="size-4 opacity-70 transition-transform duration-300 group-hover:-rotate-45 group-hover:opacity-100" />
-                </SpecularButton>
-              </li>
-            ))}
-          </ul>
         </div>
       </ScrollExpand>
     </section>
