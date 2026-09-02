@@ -40,7 +40,7 @@ export function FooterBrand() {
         />
       </div>
 
-      <div className="container-portfolio relative z-10 flex flex-col gap-8 py-8 md:py-12">
+      <div className="container-portfolio relative z-10 flex flex-col gap-8 section-pt-tight pb-8 md:pb-12">
         <div className="flex items-start justify-between gap-8">
           <Reveal>
             <div className="min-w-0">
@@ -79,7 +79,11 @@ export function FooterBrand() {
         <nav aria-label="Rodapé" className="border-white/10 border-t pt-8">
           <ul className="flex flex-wrap gap-x-4 gap-y-2">
             {sectionLinks.map((link, index) => (
-              <Reveal as="li" delay={index * FOOTER_NAV_STAGGER} key={link.href}>
+              <Reveal
+                as="li"
+                delay={index * FOOTER_NAV_STAGGER}
+                key={link.href}
+              >
                 <Button
                   className="h-auto px-4 py-2 font-heading font-normal text-sm text-white/75 hover:bg-white/10 hover:text-white"
                   nativeButton={false}

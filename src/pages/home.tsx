@@ -13,7 +13,7 @@ export function HomePage() {
   return (
     <div className="min-h-svh bg-background">
       <Hero />
-      <main className="pb-20 md:pb-24">
+      <main className="pb-10 md:pb-12">
         <Intro />
         <FavouriteStack />
         <Services />

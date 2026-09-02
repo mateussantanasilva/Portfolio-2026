@@ -14,7 +14,7 @@ export function Intro() {
 
   return (
     <section className="container-portfolio" id="sobre" ref={sectionRef}>
-      <div className="flex flex-col gap-8 py-16 md:flex-row md:justify-between md:gap-12 md:py-24 lg:py-32">
+      <div className="section-pt section-pb-tight flex flex-col gap-8 md:flex-row md:justify-between md:gap-12">
         <Reveal
           as="p"
           className="max-w-2xl font-heading font-medium text-2xl text-foreground leading-snug md:text-3xl"

@@ -9,6 +9,7 @@ export function Education() {
   return (
     <section className="container-portfolio" id="educacao">
       <CareerSectionLayout
+        className="section-pt-tight section-pb-tight"
         description="Formação técnica e acadêmica que sustenta minha prática em desenvolvimento e Engenharia de Software."
         title={education.title}
       >

@@ -9,6 +9,7 @@ export function Experience() {
   return (
     <section className="container-portfolio" id="experiencia">
       <CareerSectionLayout
+        className="section-pt-tight section-pb-tight"
         description="Experiência prática no desenvolvimento e na evolução de produtos web, mobile e sistemas de negócio."
         title={experience.title}
       >
