@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { SectionDescription } from '@/components/reveal'
 import { SectionTitle } from '@/components/section-title'
 
 interface CareerSectionLayoutProps {
@@ -18,9 +19,12 @@ export function CareerSectionLayout({
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <div className="flex flex-col gap-4 md:gap-6">
           <SectionTitle>{title}</SectionTitle>
-          <p className="max-w-sm font-heading font-light text-foreground text-sm uppercase tracking-wide md:text-xl">
+          <SectionDescription
+            className="max-w-sm md:text-xl"
+            titleLength={title.length}
+          >
             {description}
-          </p>
+          </SectionDescription>
         </div>
       </aside>
 
