@@ -1,11 +1,14 @@
+import { motion, useReducedMotion } from 'motion/react'
 import { useMemo } from 'react'
 import { FloatingDock } from '@/components/ui/floating-dock'
 import { portfolio } from '@/data/portfolio'
 import { useActiveSection } from '@/hooks/use-active-section'
+import { REVEAL_Y } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 
 export function FloatingNav() {
   const { nav } = portfolio
+  const reduceMotion = useReducedMotion()
   const sectionIds = useMemo(
     () =>
       nav.items
@@ -61,9 +64,18 @@ export function FloatingNav() {
       aria-label="Primary"
       className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 sm:bottom-8"
     >
-      <div className="pointer-events-auto max-w-full">
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="pointer-events-auto max-w-full"
+        initial={reduceMotion ? false : { opacity: 0, y: REVEAL_Y }}
+        transition={
+          reduceMotion
+            ? { duration: 0 }
+            : { delay: 0.4, duration: 0.3, ease: 'easeOut' }
+        }
+      >
         <FloatingDock items={items} />
-      </div>
+      </motion.div>
     </nav>
   )
 }
