@@ -1,13 +1,12 @@
 import { useInView, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
+import { CHAR_MS } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 
 interface SectionTitleProps {
   children: string
   className?: string
 }
-
-const CHAR_MS = 56
 
 export function SectionTitle({ children, className }: SectionTitleProps) {
   const ref = useRef<HTMLHeadingElement>(null)
