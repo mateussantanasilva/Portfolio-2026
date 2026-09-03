@@ -6,7 +6,7 @@ const LG_MIN_WIDTH = 1024
  * Habilita o efeito ScrollExpand só quando:
  * - viewport ≥ lg (1024px)
  * - altura comporta o conteúdo expandido (sem cortar o form)
- * - altura não é exagerada (evita stage 100vh com vazio enorme)
+ * - altura não é exagerada (evita card sticky com vazio enorme abaixo)
  */
 export function useContactExpandEligible({
   contentHeight,

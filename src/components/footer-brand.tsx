@@ -40,7 +40,7 @@ export function FooterBrand() {
         />
       </div>
 
-      <div className="container-portfolio relative z-10 flex flex-col gap-8 section-pt-tight pb-8 md:pb-12">
+      <div className="container-portfolio section-pt-tight relative z-10 flex flex-col gap-8 pb-8 md:pb-12">
         <div className="flex items-start justify-between gap-8">
           <Reveal>
             <div className="min-w-0">

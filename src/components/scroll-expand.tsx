@@ -28,8 +28,8 @@ export interface ScrollExpandProps {
   endWidth?: number
   holdDistance?: number
   /**
-   * Altura máxima do card expandido (px). Em telas altas o stage continua
-   * em viewport cheia e o card fica centralizado — sem painel gigante.
+   * Altura máxima do card expandido (px). O stage não usa 100vh: fica o
+   * card + a margem `section-tight`, centralizado na viewport.
    */
   maxCardHeight?: number
   media?: ReactNode
@@ -90,6 +90,13 @@ function renderDefaultMedia({
   )
 }
 
+/** Espelha `section-pt-tight` / `section-pb-tight` em `src/index.css`. */
+function sectionTightPaddingPx(viewportWidth: number): number {
+  if (viewportWidth >= 1024) return 64
+  if (viewportWidth >= 768) return 48
+  return 32
+}
+
 /** Card cresce com o conteúdo, com piso/teto; nunca passa da viewport. */
 function resolveCardHeight({
   contentHeight,
@@ -109,6 +116,35 @@ function resolveCardHeight({
   )
   const natural = Math.max(contentHeight, floor)
   return clamp(natural, Math.min(floor, ceiling), ceiling)
+}
+
+/**
+ * Stage = card (ou viewport menos a margem tight, o que for maior).
+ * Assim o vazio ao redor do painel segue o ritmo das outras seções,
+ * em vez de engolir o resto da viewport.
+ */
+function resolveStageHeight({
+  contentHeight,
+  maxCardHeight,
+  minCardHeight,
+  viewportHeight,
+  viewportWidth,
+}: {
+  contentHeight: number
+  maxCardHeight?: number
+  minCardHeight?: number
+  viewportHeight: number
+  viewportWidth: number
+}) {
+  const contentCard = resolveCardHeight({
+    contentHeight,
+    maxCardHeight,
+    minCardHeight,
+    viewportHeight,
+  })
+  const inset = sectionTightPaddingPx(viewportWidth)
+  const spaced = Math.max(0, viewportHeight - 2 * inset)
+  return Math.min(viewportHeight, Math.max(contentCard, spaced))
 }
 
 export default function ScrollExpand({
@@ -189,7 +225,8 @@ export default function ScrollExpand({
     useWindowScroll,
   }
 
-  /** endHeight efetivo (%) — recalculado no measure quando há min/max de card */
+  /** start/end height efetivos (%) — recalculados no measure quando o stage ≠ 100vh */
+  const startHeightRef = useRef(startHeight)
   const endHeightRef = useRef(endHeight)
 
   const applyProgress = useCallback((p: number) => {
@@ -201,10 +238,12 @@ export default function ScrollExpand({
     const c = propsRef.current
 
     const e = smoothstep(0, 1, p)
+    const resolvedStartHeight = startHeightRef.current
     const resolvedEndHeight = endHeightRef.current
 
     const w = c.startWidth + (c.endWidth - c.startWidth) * e
-    const h = c.startHeight + (resolvedEndHeight - c.startHeight) * e
+    const h =
+      resolvedStartHeight + (resolvedEndHeight - resolvedStartHeight) * e
     const ix = Math.max(0, (100 - w) / 2)
     const iy = Math.max(0, (100 - h) / 2)
     const r = c.startRadius + (c.endRadius - c.startRadius) * e
@@ -273,7 +312,9 @@ export default function ScrollExpand({
       if (!c.enabled) {
         stageH = Math.max(contentH, c.minCardHeight ?? 0)
         stage.style.height = `${stageH}px`
+        stage.style.top = '0px'
         track.style.height = `${stageH}px`
+        startHeightRef.current = c.startHeight
         endHeightRef.current = 100
         stage.style.setProperty(
           '--se-title-size',
@@ -282,25 +323,35 @@ export default function ScrollExpand({
         return
       }
 
-      // Stage sempre preenche a viewport — o card é que fica limitado e centralizado.
-      stageH = viewportH
-      stage.style.height = `${stageH}px`
-      track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`
-
       const hasCardBounds =
         c.minCardHeight !== undefined || c.maxCardHeight !== undefined
 
       if (hasCardBounds) {
-        const cardH = resolveCardHeight({
+        const viewportW = window.innerWidth
+        stageH = resolveStageHeight({
           contentHeight: contentH,
           maxCardHeight: c.maxCardHeight,
           minCardHeight: c.minCardHeight,
           viewportHeight: viewportH,
+          viewportWidth: viewportW,
         })
-        endHeightRef.current = clamp((cardH / stageH) * 100, c.startHeight, 100)
+        endHeightRef.current = 100
+        // Teaser mantém o tamanho em px de startHeight% da viewport (não encolhe com o stage).
+        startHeightRef.current = clamp(
+          ((c.startHeight / 100) * viewportH * 100) / stageH,
+          0,
+          99
+        )
+        stage.style.top = `${Math.max(0, (viewportH - stageH) / 2)}px`
       } else {
+        stageH = viewportH
+        startHeightRef.current = c.startHeight
         endHeightRef.current = c.endHeight
+        stage.style.top = '0px'
       }
+
+      stage.style.height = `${stageH}px`
+      track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`
 
       const w = root.clientWidth || stageH
       stage.style.setProperty(

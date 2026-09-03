@@ -166,7 +166,7 @@ export function ContactCta() {
   const expandEnabled = useContactExpandEligible({
     contentHeight,
     enabled: !reduceMotion,
-    // Stage 100vh em monitores muito altos gera vazio entre Formação → Contato → Footer.
+    // Em viewports muito altas o card sticky deixa um vão até o Footer.
     maxViewportHeight: CONTACT_MAX_CARD_HEIGHT + 80,
     minContentHeight: CONTACT_MIN_CARD_HEIGHT,
   })
