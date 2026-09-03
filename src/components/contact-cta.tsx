@@ -110,7 +110,7 @@ function FormTextarea({
         aria-invalid={Boolean(error)}
         className={cn(
           fieldControlClassName,
-          'min-h-36 resize-none leading-relaxed md:min-h-40',
+          'min-h-36 resize-none touch-auto leading-relaxed md:min-h-40',
           error && 'border-red-400/80 focus-visible:border-red-400/80'
         )}
         id={fieldId}
@@ -314,6 +314,7 @@ export function ContactCta() {
         endRadius={CONTACT_END_RADIUS}
         endWidth={100}
         holdDistance={1}
+        key={expandEnabled ? 'contact-expand' : 'contact-static'}
         maxCardHeight={CONTACT_MAX_CARD_HEIGHT}
         media={<BrandSurface />}
         mediaZoom={1.06}

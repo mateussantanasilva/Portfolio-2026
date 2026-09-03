@@ -308,18 +308,18 @@ export default function ScrollExpand({
       const contentH = contentRef.current?.offsetHeight ?? 0
       c.onContentHeight?.(contentH)
 
-      // Sem efeito de revelar: seção estática no tamanho do conteúdo (sem track extra).
+      // Sem efeito de revelar: card no fluxo — altura automática, sem stage fixo.
       if (!c.enabled) {
         stageH = Math.max(contentH, c.minCardHeight ?? 0)
-        stage.style.height = `${stageH}px`
-        stage.style.top = '0px'
-        track.style.height = `${stageH}px`
+        stage.style.height = ''
+        stage.style.top = ''
+        stage.style.clipPath = ''
+        track.style.height = ''
+        if (mediaRef.current) {
+          mediaRef.current.style.transform = ''
+        }
         startHeightRef.current = c.startHeight
         endHeightRef.current = 100
-        stage.style.setProperty(
-          '--se-title-size',
-          `${clamp((root.clientWidth || stageH) * 0.075, 20, 84)}px`
-        )
         return
       }
 
@@ -427,32 +427,49 @@ export default function ScrollExpand({
     }
   }, [applyProgress, enabled, useWindowScroll])
 
-  // Com useWindowScroll, o progresso depende do scroll da janela.
-  // Com pointer-events no overlay (form clicável), o wheel não pode ficar preso no card.
-  useEffect(() => {
-    if (!(enabled && useWindowScroll)) return
-
-    const overlay = overlayRef.current
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: ref null until mounted
-    if (!overlay) return
-
-    const onWheel = (event: WheelEvent) => {
-      event.preventDefault()
-      window.scrollBy({ left: event.deltaX, top: event.deltaY })
-    }
-
-    overlay.addEventListener('wheel', onWheel, { capture: true, passive: false })
-    return () =>
-      overlay.removeEventListener('wheel', onWheel, { capture: true })
-  }, [enabled, useWindowScroll])
-
   const renderedMedia =
     media ?? renderDefaultMedia({ alt, mediaType, poster, src })
+
+  // Modo estático (mobile / telas grandes / reduced-motion): card no fluxo
+  // do documento. `key` evita reusar o nó do modo expand (clip-path inline).
+  if (!enabled) {
+    return (
+      <div
+        className={cn('relative w-full touch-pan-y', className)}
+        ref={rootRef}
+        style={style}
+      >
+        <div className="relative w-full" ref={trackRef}>
+          <div
+            className="relative isolate w-full overflow-hidden rounded-[40px] bg-portfolio-brand-surface [--se-title-size:4rem]"
+            ref={stageRef}
+          >
+            {/* Mesmo padrão da seção Atuação: fundo absolute preenchendo o card */}
+            <div
+              className="pointer-events-none absolute inset-0 z-0 size-full"
+              ref={mediaRef}
+              style={{ clipPath: 'none', transform: 'none' }}
+            >
+              {renderedMedia}
+            </div>
+            <div
+              className={cn('relative z-10 w-full min-w-0 touch-pan-y', overlayClassName)}
+              ref={overlayRef}
+            >
+              <div className="w-full min-w-0" ref={contentRef}>
+                {children}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
       className={cn(
-        'relative h-full w-full',
+        'relative h-full w-full touch-pan-y',
         !useWindowScroll &&
           'overflow-y-auto overflow-x-hidden overscroll-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
         className
@@ -462,19 +479,11 @@ export default function ScrollExpand({
     >
       <div className="relative w-full" ref={trackRef}>
         <div
-          className={cn(
-            'w-full overflow-hidden [--se-title-size:4rem]',
-            enabled ? 'sticky top-0' : 'relative'
-          )}
+          className="sticky top-0 w-full overflow-hidden touch-pan-y [--se-title-size:4rem]"
           ref={stageRef}
         >
           <div
-            className={cn(
-              'absolute inset-0 [will-change:clip-path]',
-              enabled
-                ? '[clip-path:inset(21%_29%_21%_29%_round_24px)]'
-                : '[clip-path:inset(0%_0%_0%_0%_round_40px)]'
-            )}
+            className="absolute inset-0 [clip-path:inset(21%_29%_21%_29%_round_24px)] [will-change:clip-path]"
             ref={frameRef}
           >
             <div
@@ -490,26 +499,18 @@ export default function ScrollExpand({
             {children ? (
               <div
                 className={cn(
-                  'absolute inset-0 flex flex-col items-center justify-center p-[6%] text-center [will-change:opacity,transform]',
-                  // Com scroll da janela, não prender o wheel no overlay —
-                  // senão o card expandido “engole” o scroll e não recolhe.
-                  enabled && useWindowScroll
-                    ? 'overflow-hidden'
-                    : 'overflow-y-auto overscroll-contain',
-                  enabled
-                    ? 'opacity-0'
-                    : 'pointer-events-auto opacity-100',
+                  'absolute inset-0 flex flex-col items-center justify-center overflow-visible p-[6%] text-center opacity-0 touch-pan-y [will-change:opacity,transform]',
                   overlayClassName
                 )}
                 ref={overlayRef}
               >
-                <div className="w-full shrink-0" ref={contentRef}>
+                <div className="w-full min-w-0 shrink-0" ref={contentRef}>
                   {children}
                 </div>
               </div>
             ) : null}
           </div>
-          {enabled && (teaser || title) ? (
+          {teaser || title ? (
             <div
               className="pointer-events-none absolute inset-0 m-0 flex items-center justify-center px-[6%] text-center [will-change:opacity,transform]"
               ref={titleRef}
@@ -521,7 +522,7 @@ export default function ScrollExpand({
               )}
             </div>
           ) : null}
-          {enabled && scrollHint ? (
+          {scrollHint ? (
             <div
               className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center text-center text-[0.8125rem] text-white/55 tracking-[0.02em] [will-change:opacity,transform]"
               ref={hintRef}
