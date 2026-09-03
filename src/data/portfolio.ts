@@ -8,7 +8,7 @@ import iconMonitorCode from '@/assets/menu/monitor-code.svg'
 import iconUser from '@/assets/menu/user.svg'
 import projectBibliotroca from '@/assets/projects/bibliotroca.webp'
 import projectConnecta from '@/assets/projects/connecta.webp'
-import projectIgnite from '@/assets/projects/ignite-projects.webp'
+import projectJobHunter from '@/assets/projects/job-hunter.webp'
 import projectSavpets from '@/assets/projects/savpets.webp'
 import iconCpu from '@/assets/services/icon-cpu.svg'
 import iconMonitor from '@/assets/services/icon-monitor.svg'
@@ -214,6 +214,13 @@ export const portfolio = {
       },
       {
         description:
+        'Serviço backend que usa IA para analisar vagas e enviar as melhores oportunidades pelo Telegram.',
+        href: 'https://github.com/mateussantanasilva/job-hunter',
+        image: projectJobHunter,
+        title: 'Job Hunter AI',
+      },
+      {
+        description:
           'Plataforma para facilitar a troca e o compartilhamento de livros e materiais didáticos entre estudantes.',
         href: 'https://github.com/mateussantanasilva/BiblioTroca',
         image: projectBibliotroca,
@@ -226,13 +233,13 @@ export const portfolio = {
         image: projectSavpets,
         title: 'SavPets',
       },
-      {
-        description:
-          'Coleção de aplicações desenvolvidas durante a formação Ignite para praticar React.js, componentização e fundamentos do ecossistema Front-end.',
-        href: 'https://github.com/mateussantanasilva/WebProjects',
-        image: projectIgnite,
-        title: 'Projetos Ignite',
-      },
+      // {
+      //   description:
+      //     'Coleção de aplicações desenvolvidas durante a formação Ignite para praticar React.js, componentização e fundamentos do ecossistema Front-end.',
+      //   href: 'https://github.com/mateussantanasilva/WebProjects',
+      //   image: projectIgnite,
+      //   title: 'Projetos Ignite',
+      // },
     ],
     title: '/Projetos',
   },
