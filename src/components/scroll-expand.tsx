@@ -110,10 +110,7 @@ function resolveCardHeight({
   viewportHeight: number
 }) {
   const floor = minCardHeight ?? 0
-  const ceiling = Math.min(
-    viewportHeight,
-    maxCardHeight ?? viewportHeight
-  )
+  const ceiling = Math.min(viewportHeight, maxCardHeight ?? viewportHeight)
   const natural = Math.max(contentHeight, floor)
   return clamp(natural, Math.min(floor, ceiling), ceiling)
 }
@@ -302,7 +299,9 @@ export default function ScrollExpand({
 
     const measure = () => {
       const c = propsRef.current
-      const viewportH = c.useWindowScroll ? window.innerHeight : root.clientHeight
+      const viewportH = c.useWindowScroll
+        ? window.innerHeight
+        : root.clientHeight
       if (viewportH <= 0) return
 
       const contentH = contentRef.current?.offsetHeight ?? 0
@@ -453,7 +452,10 @@ export default function ScrollExpand({
               {renderedMedia}
             </div>
             <div
-              className={cn('relative z-10 w-full min-w-0 touch-pan-y', overlayClassName)}
+              className={cn(
+                'relative z-10 w-full min-w-0 touch-pan-y',
+                overlayClassName
+              )}
               ref={overlayRef}
             >
               <div className="w-full min-w-0" ref={contentRef}>
@@ -479,7 +481,7 @@ export default function ScrollExpand({
     >
       <div className="relative w-full" ref={trackRef}>
         <div
-          className="sticky top-0 w-full overflow-hidden touch-pan-y [--se-title-size:4rem]"
+          className="sticky top-0 w-full touch-pan-y overflow-hidden [--se-title-size:4rem]"
           ref={stageRef}
         >
           <div
@@ -499,7 +501,7 @@ export default function ScrollExpand({
             {children ? (
               <div
                 className={cn(
-                  'absolute inset-0 flex flex-col items-center justify-center overflow-visible p-[6%] text-center opacity-0 touch-pan-y [will-change:opacity,transform]',
+                  'absolute inset-0 flex touch-pan-y flex-col items-center justify-center overflow-visible p-[6%] text-center opacity-0 [will-change:opacity,transform]',
                   overlayClassName
                 )}
                 ref={overlayRef}

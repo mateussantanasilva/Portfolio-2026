@@ -1,13 +1,13 @@
-import { ContactCta } from '@/components/contact-cta'
-import { Education } from '@/components/education'
-import { Experience } from '@/components/experience'
-import { FavouriteStack } from '@/components/favourite-stack'
 import { FloatingNav } from '@/components/floating-nav'
-import { FooterBrand } from '@/components/footer-brand'
-import { Hero } from '@/components/hero'
-import { ImpressiveWorks } from '@/components/impressive-works'
-import { Intro } from '@/components/intro'
-import { Services } from '@/components/services'
+import { ContactCta } from '@/components/sections/contact-cta'
+import { Education } from '@/components/sections/education'
+import { Experience } from '@/components/sections/experience'
+import { FavouriteStack } from '@/components/sections/favourite-stack'
+import { FooterBrand } from '@/components/sections/footer-brand'
+import { Hero } from '@/components/sections/hero'
+import { ImpressiveWorks } from '@/components/sections/impressive-works'
+import { Intro } from '@/components/sections/intro'
+import { Services } from '@/components/sections/services'
 
 export function HomePage() {
   return (

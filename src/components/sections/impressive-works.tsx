@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { motion, useInView, useReducedMotion } from 'motion/react'
 import { useRef } from 'react'
-import iconGithub from '@/assets/icons/GitHub.png'
+import iconGithub from '@/assets/stack/GitHub.png'
 import { BubbleEntrance, SectionDescription } from '@/components/reveal'
 import { SectionTitle } from '@/components/section-title'
 import SpecularButton from '@/components/ui/specular-button'

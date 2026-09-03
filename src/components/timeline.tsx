@@ -155,7 +155,7 @@ export function TimelineItem({
         aria-hidden
         className={
           highlight
-            ? 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-portfolio-navy bg-background dark:border-foreground md:size-4'
+            ? 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-portfolio-navy bg-background md:size-4 dark:border-foreground'
             : 'absolute top-2 left-0 flex size-3 -translate-x-1/2 items-center justify-center rounded-full border-2 border-foreground bg-background md:size-4'
         }
         initial={false}
