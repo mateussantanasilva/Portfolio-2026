@@ -21,14 +21,14 @@ export function CareerSectionLayout({
     <div
       className={cn(
         'grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)] lg:items-start lg:gap-16',
-        className,
+        className
       )}
     >
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <div className="flex flex-col gap-4 md:gap-6">
           <SectionTitle>{title}</SectionTitle>
           <SectionDescription
-            className="max-w-sm md:text-xl"
+            className="max-w-sm text-pretty md:text-xl"
             titleLength={title.length}
           >
             {description}

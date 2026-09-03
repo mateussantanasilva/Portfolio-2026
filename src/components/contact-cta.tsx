@@ -110,7 +110,7 @@ function FormTextarea({
         aria-invalid={Boolean(error)}
         className={cn(
           fieldControlClassName,
-          'min-h-36 resize-none touch-auto leading-relaxed md:min-h-40',
+          'min-h-36 touch-auto resize-none leading-relaxed md:min-h-40',
           error && 'border-red-400/80 focus-visible:border-red-400/80'
         )}
         id={fieldId}
@@ -180,7 +180,7 @@ export function ContactCta() {
               <h2 className="font-heading font-medium text-3xl text-white leading-none tracking-tight md:text-4xl lg:text-5xl">
                 {contact.headline}
               </h2>
-              <p className="max-w-xl font-heading font-light text-sm text-white/60 uppercase tracking-wide md:text-lg lg:text-xl">
+              <p className="max-w-lg text-balance font-heading font-light text-sm text-white/60 uppercase tracking-wide md:text-lg lg:text-xl">
                 {contact.subtitle}
               </p>
             </div>

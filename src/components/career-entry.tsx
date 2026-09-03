@@ -19,17 +19,17 @@ export function CareerEntry({
             {period}
           </span>
 
-          <h3 className="font-heading font-medium text-2xl text-foreground leading-tight md:text-4xl">
+          <h3 className="text-pretty font-heading font-medium text-2xl text-foreground leading-tight md:text-4xl">
             {title}
           </h3>
 
-          <p className="font-heading text-base text-foreground md:text-lg">
+          <p className="text-pretty font-heading text-base text-foreground md:text-lg">
             {subtitle}
           </p>
         </div>
       </div>
 
-      <p className="max-w-3xl font-heading font-light text-base text-portfolio-muted leading-relaxed md:text-lg">
+      <p className="max-w-3xl text-balance font-heading font-light text-base text-portfolio-muted leading-relaxed md:text-lg">
         {description}
       </p>
     </div>

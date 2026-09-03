@@ -17,7 +17,7 @@ export function Intro() {
       <div className="section-pt section-pb-tight flex flex-col gap-8 md:flex-row md:justify-between md:gap-12">
         <Reveal
           as="p"
-          className="max-w-2xl font-heading font-medium text-2xl text-foreground leading-snug md:text-3xl"
+          className="max-w-2xl text-balance font-heading font-medium text-2xl text-foreground leading-snug md:text-3xl"
           inView={visible}
           x={-INTRO_SLIDE}
           y={0}
@@ -28,7 +28,7 @@ export function Intro() {
         <div className="flex w-full max-w-md shrink-0 flex-col gap-8 md:items-end">
           <Reveal
             as="p"
-            className="font-heading font-light text-base text-portfolio-muted md:text-right md:text-lg"
+            className="text-balance font-heading font-light text-base text-portfolio-muted md:text-right md:text-lg"
             delay={0.08}
             inView={visible}
             x={INTRO_SLIDE}

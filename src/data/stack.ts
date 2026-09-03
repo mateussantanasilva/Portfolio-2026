@@ -60,7 +60,7 @@ const design: StackCategory = {
 
 const mobile: StackCategory = {
   description:
-    'Aplicações multiplataforma com React Native e Expo, focadas em experiência fluida e evolução sustentável.',
+    'Aplicações multiplataforma para Android e iOS com React Native e Expo, focando na experiência fluida.',
   id: 'mobile',
   name: 'Mobile',
   techs: [
@@ -84,7 +84,7 @@ const backend: StackCategory = {
 
 const testing: StackCategory = {
   description:
-    'Testes automatizados com Jest para reduzir regressões e dar mais segurança à evolução do código.',
+    'Testes automatizados com Jest para garantir o funcionamento correto das aplicações.',
   id: 'testing',
   name: 'Testes',
   techs: [{ icon: iconJest, name: 'Jest' }],
@@ -92,7 +92,7 @@ const testing: StackCategory = {
 
 const databases: StackCategory = {
   description:
-    'Modelagem, integração, consultas e persistência de dados com bancos relacionais, NoSQL e serviços gerenciados.',
+    'Modelagem e gerenciamento de dados com bancos relacionais e NoSQL, utilizando ORMs e outras ferramentas de acesso a dados.',
   id: 'databases',
   name: 'Bancos de dados',
   techs: [
@@ -105,7 +105,7 @@ const databases: StackCategory = {
 
 const cloud: StackCategory = {
   description:
-    'Versionamento, containers, Linux e fundamentos de cloud para apoiar o desenvolvimento e a entrega de aplicações.',
+    'Versionamento, containers, Linux e fundamentos de cloud para o desenvolvimento e a entrega de aplicações.',
   id: 'cloud',
   name: 'Cloud & DevOps',
   techs: [
@@ -129,7 +129,7 @@ const engineering: StackCategory = {
 const agile: StackCategory = {
   badges: ['Scrum', 'Kanban'],
   description:
-    'Colaboração em equipe com Scrum, Kanban e entregas incrementais orientadas a prioridades.',
+    'Colaboração em equipe com Scrum e Kanban, organizando tarefas por prioridade.',
   id: 'agile',
   name: 'Metodologias ágeis',
 }

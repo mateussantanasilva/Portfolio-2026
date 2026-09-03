@@ -55,7 +55,7 @@ export const portfolio = {
       },
     ],
     subtitle:
-      'Conte-me um pouco sobre a oportunidade e vamos conversar sobre como posso contribuir.',
+      'Vamos conversar sobre sua oportunidade e o que podemos construir juntos.',
     teaserTitle: 'Vamos conversar?',
     whatsappNumber: '5511932178035',
     whatsappUrl: 'https://wa.me/5511932178035',
@@ -165,29 +165,29 @@ export const portfolio = {
   },
   services: {
     description:
-      'Como posso contribuir em times de produto e em projetos sob demanda.',
+      'Áreas em que posso contribuir no desenvolvimento de projetos.',
     items: [
       {
         description:
-          'Criação e evolução de interfaces responsivas, acessíveis e integradas a APIs com React, Next.js, TypeScript e Design System.',
+          'Criação de interfaces responsivas, acessíveis e integradas a APIs, com foco em usabilidade e visual moderno.',
         icon: iconMonitor,
         name: 'Desenvolvimento Front-end',
       },
       {
         description:
-          'Desenvolvimento de APIs REST e regras de negócio com Node.js e TypeScript, aplicando organização modular, orientação a objetos e princípios SOLID.',
+          'Desenvolvimento de APIs e funcionalidades, seguindo boas práticas de estruturação e manutenção.',
         icon: iconServer,
         name: 'Desenvolvimento Back-end',
       },
       {
         description:
-          'Aplicações multiplataforma com React Native e Expo, com foco em experiência fluida, consistência e facilidade de manutenção.',
+          'Desenvolvimento de aplicações multiplataforma para celulares e tablets, integrando recursos nativos, APIs e serviços.',
         icon: iconSmartphone,
         name: 'Desenvolvimento Mobile',
       },
       {
         description:
-          'Requisitos, organização técnica, versionamento e práticas de qualidade para construir soluções mais fáceis de manter e evoluir.',
+          'Análise de requisitos, planejamento técnico e testes para desenvolver soluções confiáveis.',
         icon: iconCpu,
         name: 'Engenharia de Software',
       },
@@ -196,12 +196,12 @@ export const portfolio = {
   },
   stack: {
     description:
-      'Tecnologias, práticas e fundamentos que aplico para construir e evoluir produtos digitais.',
+      'Ferramentas e práticas que uso no dia a dia para criar produtos digitais.',
     title: '/Habilidades',
   },
   works: {
     description:
-      'Projetos que mostram como transformo necessidades em produtos web e mobile.',
+      'Projetos que mostram como transformo ideias em produtos digitais.',
     exploreHref: 'https://github.com/mateussantanasilva',
     exploreLabel: 'Explorar mais no GitHub',
     items: [

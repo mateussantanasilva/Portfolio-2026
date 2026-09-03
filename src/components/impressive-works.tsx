@@ -36,11 +36,7 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
 
   return (
     <motion.div
-      animate={
-        revealed
-          ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: REVEAL_Y }
-      }
+      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: REVEAL_Y }}
       className="h-full"
       initial={false}
       transition={
@@ -53,7 +49,7 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
       }
     >
       <motion.a
-        className="group relative isolate block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#111] backface-hidden will-change-transform md:aspect-[16/11]"
+        className="group backface-hidden relative isolate block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#111] will-change-transform md:aspect-[16/11]"
         href={project.href}
         initial={false}
         rel="noopener noreferrer"
@@ -73,13 +69,13 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(69,92,233,0.35),transparent_45%)] opacity-0 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-100" />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-4 md:p-8">
-          <h3 className="font-heading font-medium text-2xl text-white leading-tight md:text-4xl">
+          <h3 className="text-pretty font-heading font-medium text-2xl text-white leading-tight md:text-4xl">
             {project.title}
           </h3>
 
           <div className="h-px w-12 bg-white/30 transition-all duration-500 group-hover:w-24 group-hover:bg-white/70" />
 
-          <p className="max-h-32 overflow-hidden font-heading font-light text-sm text-white/75 leading-relaxed opacity-100 transition-all duration-500 md:max-h-0 md:text-base md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100">
+          <p className="max-h-32 overflow-hidden text-balance font-heading font-light text-sm text-white/75 leading-relaxed opacity-100 transition-all duration-500 md:max-h-0 md:text-base md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100">
             {project.description}
           </p>
 

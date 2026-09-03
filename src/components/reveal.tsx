@@ -165,7 +165,7 @@ export function SectionDescription({
     <Reveal
       amount={0.3}
       className={cn(
-        'max-w-md font-heading font-light text-foreground text-sm uppercase tracking-wide md:text-xl',
+        'max-w-md text-balance font-heading font-light text-foreground text-sm uppercase tracking-wide md:text-xl',
         className
       )}
       delay={typingDelay(titleLength)}

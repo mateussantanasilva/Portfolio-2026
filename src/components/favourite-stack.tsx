@@ -190,7 +190,7 @@ function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
             {category.name}
           </h3>
 
-          <p className="font-heading font-light text-portfolio-muted text-sm leading-relaxed md:text-base">
+          <p className="text-pretty font-heading font-light text-portfolio-muted text-sm leading-relaxed md:text-base">
             {category.description}
           </p>
         </div>

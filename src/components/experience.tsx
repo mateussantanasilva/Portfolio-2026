@@ -10,7 +10,7 @@ export function Experience() {
     <section className="container-portfolio" id="experiencia">
       <CareerSectionLayout
         className="section-pt-tight section-pb-tight"
-        description="Experiência prática no desenvolvimento e na evolução de produtos web, mobile e sistemas de negócio."
+        description="Experiências profissionais que contribuíram para meu desenvolvimento."
         title={experience.title}
       >
         <Timeline accent>
