@@ -58,7 +58,7 @@ export function Timeline({ accent = false, children }: TimelineProps) {
   return (
     <TimelineContainerContext.Provider value={ref}>
       <TimelineProgressContext.Provider value={smoothProgress}>
-        <div className="relative ml-3 md:ml-4" ref={ref}>
+        <div className="relative ml-3 md:ml-4 lg:ml-0" ref={ref}>
           <div
             aria-hidden
             className="absolute top-2 bottom-2 left-0 w-px -translate-x-1/2 bg-portfolio-subtle"

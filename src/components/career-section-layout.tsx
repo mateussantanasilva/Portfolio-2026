@@ -10,7 +10,10 @@ interface CareerSectionLayoutProps {
   title: string
 }
 
-/** Título sticky à esquerda + conteúdo (timeline) à direita no desktop */
+/**
+ * No desktop a linha da timeline fica no centro horizontal:
+ * título/descrição à esquerda, entradas à direita — colunas iguais.
+ */
 export function CareerSectionLayout({
   children,
   className,
@@ -20,11 +23,11 @@ export function CareerSectionLayout({
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)] lg:items-start lg:gap-16',
+        'grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 lg:items-start lg:gap-0',
         className
       )}
     >
-      <aside className="lg:sticky lg:top-28 lg:self-start">
+      <aside className="lg:sticky lg:top-28 lg:self-start lg:pr-8 xl:pr-12">
         <div className="flex flex-col gap-4 md:gap-6">
           <SectionTitle>{title}</SectionTitle>
           <SectionDescription

@@ -289,7 +289,7 @@ export function ContactCta() {
             </div>
 
             <SpecularButton
-              className="group self-end"
+              className="group self-center sm:self-end"
               disabled={isSubmitting}
               size="md"
               theme="light"

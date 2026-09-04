@@ -79,7 +79,7 @@ interface BubbleEntranceProps {
   delay?: number
 }
 
-/** Pop de bolha visível + remonta filhos ao concluir para o shader do SpecularButton iniciar no tamanho certo */
+/** Pop de bolha na entrada (SpecularButton não depende mais de remount WebGL) */
 export function BubbleEntrance({
   children,
   className,

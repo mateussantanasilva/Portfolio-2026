@@ -77,7 +77,7 @@ function ServiceCard({
                 y: isHovered ? -6 : 0,
               }
         }
-        className="relative isolate flex h-full flex-col gap-8 overflow-hidden rounded-3xl border border-white/10 p-8 backdrop-blur-sm will-change-transform"
+        className="relative isolate flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-white/10 p-4 backdrop-blur-sm will-change-transform sm:gap-8 sm:p-8"
         initial={false}
         onHoverStart={onHoverStart}
         style={{ zIndex: isHovered ? 2 : 1 }}
@@ -100,18 +100,18 @@ function ServiceCard({
           spread={120}
         />
 
-        <div className="relative z-10 flex flex-col gap-8">
-          <div className="flex size-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+        <div className="relative z-10 flex flex-col gap-4 sm:gap-8">
+          <div className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 sm:size-16">
             <img
               alt=""
-              className="size-8 object-contain brightness-0 invert"
+              className="size-6 object-contain brightness-0 invert sm:size-8"
               height={32}
               src={item.icon}
               width={32}
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2 sm:gap-4">
             <h3 className="font-heading font-medium text-white text-xl leading-tight md:text-2xl">
               {item.name}
             </h3>
@@ -137,7 +137,7 @@ export function Services() {
     <section className="relative z-10" id="atuacao">
       <BrandSurface />
 
-      <div className="container-portfolio relative z-10 section-spacing">
+      <div className="container-portfolio section-spacing relative z-10">
         <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <SectionTitle className="text-white">{services.title}</SectionTitle>

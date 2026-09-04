@@ -41,7 +41,7 @@ export function SectionTitle({ children, className }: SectionTitleProps) {
     <h2
       aria-label={children}
       className={cn(
-        'font-heading font-medium text-4xl text-foreground leading-none tracking-tight md:text-5xl lg:text-7xl',
+        'font-heading font-medium text-3xl text-foreground leading-none tracking-tight sm:text-4xl md:text-5xl lg:text-7xl',
         className
       )}
       ref={ref}

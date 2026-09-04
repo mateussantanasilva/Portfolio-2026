@@ -252,3 +252,48 @@ html[data-magicui-theme-vt="active"]::view-transition-group(root) {
 @utility section-spacing {
   @apply section-pt section-pb;
 }
+
+/* Specular button — anel interno (sem WebGL/OGL) */
+.specular-button {
+  --sb-shine-angle: 140deg;
+  --sb-shine-bright: 0.4;
+  isolation: isolate;
+}
+
+.specular-button__rim {
+  pointer-events: none;
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--sb-shine-angle),
+    transparent 0deg,
+    color-mix(
+        in srgb,
+        var(--sb-line) calc(var(--sb-shine-bright) * 100%),
+        transparent
+      )
+      18deg,
+    transparent 52deg,
+    color-mix(in srgb, var(--sb-base) 55%, transparent) 160deg,
+    transparent 220deg,
+    color-mix(
+        in srgb,
+        var(--sb-line) calc(var(--sb-shine-bright) * 75%),
+        transparent
+      )
+      310deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+

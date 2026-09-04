@@ -17,6 +17,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -46,6 +47,21 @@ const ENTER_TRANSITION = {
   stiffness: 520,
   type: 'spring' as const,
 }
+const MD_MIN_WIDTH = 768
+
+function subscribeMdUp(onChange: () => void) {
+  const mediaQuery = window.matchMedia(`(min-width: ${MD_MIN_WIDTH}px)`)
+  mediaQuery.addEventListener('change', onChange)
+  return () => mediaQuery.removeEventListener('change', onChange)
+}
+
+function useMdUp() {
+  return useSyncExternalStore(
+    subscribeMdUp,
+    () => window.matchMedia(`(min-width: ${MD_MIN_WIDTH}px)`).matches,
+    () => false
+  )
+}
 
 function resolveDownload(download?: boolean | string) {
   if (typeof download === 'string') return download
@@ -62,6 +78,8 @@ function cloneIcon(icon: ReactNode) {
 export function FloatingDock({ items, className }: FloatingDockProps) {
   const mouseX = useMotionValue(Number.POSITIVE_INFINITY)
   const reduceMotion = useReducedMotion()
+  const mdUp = useMdUp()
+  const magnify = Boolean(mdUp && !reduceMotion)
   const activeTitle = items.find((item) => item.active)?.title ?? ''
   const pendingTitle = useRef(activeTitle)
   const timeoutRef = useRef<number | null>(null)
@@ -69,6 +87,10 @@ export function FloatingDock({ items, className }: FloatingDockProps) {
   const [shownTitle, setShownTitle] = useState(activeTitle)
   const [exitingTitle, setExitingTitle] = useState<string | null>(null)
   pendingTitle.current = activeTitle
+
+  useEffect(() => {
+    if (!magnify) mouseX.set(Number.POSITIVE_INFINITY)
+  }, [magnify, mouseX])
 
   useEffect(() => {
     if (reduceMotion) {
@@ -116,9 +138,9 @@ export function FloatingDock({ items, className }: FloatingDockProps) {
 
   const handleMouseMove = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      if (!reduceMotion) mouseX.set(e.pageX)
+      if (magnify) mouseX.set(e.pageX)
     },
-    [mouseX, reduceMotion]
+    [magnify, mouseX]
   )
 
   return (
@@ -134,6 +156,7 @@ export function FloatingDock({ items, className }: FloatingDockProps) {
         <IconContainer
           exiting={item.title === exitingTitle}
           key={item.title}
+          magnify={magnify}
           mouseX={mouseX}
           reduceMotion={Boolean(reduceMotion)}
           shown={item.title === shownTitle}
@@ -155,11 +178,13 @@ function IconContainer({
   fill,
   className,
   reduceMotion,
+  magnify,
   shown,
   exiting,
   onNavigate,
 }: FloatingDockItem & {
   exiting: boolean
+  magnify: boolean
   mouseX: MotionValue<number>
   reduceMotion: boolean
   shown: boolean
@@ -184,9 +209,12 @@ function IconContainer({
   const widthIcon = useSpring(widthTransformIcon, SPRING)
   const heightIcon = useSpring(heightTransformIcon, SPRING)
 
-  const onEnter = useCallback(() => setHovered(true), [])
+  const onEnter = useCallback(() => {
+    if (magnify) setHovered(true)
+  }, [magnify])
   const onLeave = useCallback(() => setHovered(false), [])
   const handleClick = useCallback(() => {
+    setHovered(false)
     onNavigate?.()
   }, [onNavigate])
 
@@ -198,6 +226,8 @@ function IconContainer({
       } = EXIT_TRANSITION
   if (reduceMotion) highlightTransition = { duration: 0 }
   else if (highlight) highlightTransition = ENTER_TRANSITION
+
+  const fixedIcon = fill ? 36 : 18
 
   return (
     <a
@@ -212,7 +242,7 @@ function IconContainer({
       onMouseLeave={onLeave}
     >
       <AnimatePresence>
-        {hovered ? (
+        {magnify && hovered ? (
           <motion.div
             animate={{ opacity: 1, x: '-50%', y: 0 }}
             className="absolute -top-8 left-1/2 z-10 w-fit whitespace-nowrap rounded-md border border-white/10 bg-[#262626] px-2 py-0.5 font-medium text-white text-xs"
@@ -227,7 +257,7 @@ function IconContainer({
       <motion.div
         className="relative flex aspect-square items-center justify-center overflow-hidden rounded-full bg-[#262626]"
         ref={ref}
-        style={reduceMotion ? { height: 40, width: 40 } : { height, width }}
+        style={magnify ? { height, width } : { height: 40, width: 40 }}
       >
         <motion.div
           className={cn(
@@ -235,9 +265,9 @@ function IconContainer({
             fill && 'rounded-full'
           )}
           style={
-            reduceMotion
-              ? { height: fill ? 36 : 18, width: fill ? 36 : 18 }
-              : { height: heightIcon, width: widthIcon }
+            magnify
+              ? { height: heightIcon, width: widthIcon }
+              : { height: fixedIcon, width: fixedIcon }
           }
         >
           {cloneIcon(icon)}
@@ -258,9 +288,9 @@ function IconContainer({
               fill && 'rounded-full'
             )}
             style={
-              reduceMotion
-                ? { height: fill ? 36 : 18, width: fill ? 36 : 18 }
-                : { height: heightIcon, width: widthIcon }
+              magnify
+                ? { height: heightIcon, width: widthIcon }
+                : { height: fixedIcon, width: fixedIcon }
             }
           >
             {cloneIcon(icon)}

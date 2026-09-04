@@ -49,7 +49,7 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
       }
     >
       <motion.a
-        className="group backface-hidden relative isolate block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#111] will-change-transform md:aspect-[16/11]"
+        className="group backface-hidden relative isolate flex h-full flex-col overflow-hidden rounded-3xl border border-portfolio-subtle bg-portfolio-surface will-change-transform md:block md:aspect-[16/11] md:border-white/10 md:bg-[#111]"
         href={project.href}
         initial={false}
         rel="noopener noreferrer"
@@ -57,29 +57,31 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
         transition={reduceMotion ? { duration: 0 } : workHoverTransition}
         whileHover={reduceMotion ? undefined : { y: -6 }}
       >
-        <img
-          alt={project.title}
-          className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-          height={640}
-          src={project.image}
-          width={512}
-        />
+        <div className="relative aspect-[16/10] overflow-hidden md:absolute md:inset-0 md:aspect-auto">
+          <img
+            alt={project.title}
+            className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            height={640}
+            src={project.image}
+            width={512}
+          />
 
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/45 to-black/10 transition-opacity duration-500 group-hover:from-black group-hover:via-black/55" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(69,92,233,0.35),transparent_45%)] opacity-0 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-transparent transition-opacity duration-500 md:from-black md:via-black/45 md:to-black/10 md:group-hover:from-black md:group-hover:via-black/55" />
+          <div className="absolute inset-0 hidden bg-[radial-gradient(circle_at_top_right,rgba(69,92,233,0.35),transparent_45%)] opacity-0 mix-blend-overlay transition-opacity duration-500 md:block md:group-hover:opacity-100" />
+        </div>
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-4 md:p-8">
-          <h3 className="text-pretty font-heading font-medium text-2xl text-white leading-tight md:text-4xl">
+        <div className="relative flex flex-col gap-3 p-4 md:absolute md:inset-x-0 md:bottom-0 md:gap-4 md:p-8">
+          <h3 className="text-pretty font-heading font-medium text-foreground text-xl leading-tight md:text-4xl md:text-white">
             {project.title}
           </h3>
 
-          <div className="h-px w-12 bg-white/30 transition-all duration-500 group-hover:w-24 group-hover:bg-white/70" />
+          <div className="h-px w-12 bg-foreground/20 transition-all duration-500 group-hover:w-24 group-hover:bg-foreground/50 md:bg-white/30 md:group-hover:bg-white/70" />
 
-          <p className="max-h-32 overflow-hidden text-balance font-heading font-light text-sm text-white/75 leading-relaxed opacity-100 transition-all duration-500 md:max-h-0 md:text-base md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100">
+          <p className="text-balance font-heading font-light text-portfolio-muted text-sm leading-relaxed md:max-h-0 md:overflow-hidden md:text-base md:text-white/75 md:opacity-0 md:transition-all md:duration-500 md:group-hover:max-h-40 md:group-hover:opacity-100">
             {project.description}
           </p>
 
-          <span className="inline-flex items-center gap-2 font-mono text-white text-xs uppercase tracking-wider opacity-80 transition-opacity duration-300 group-hover:opacity-100 md:text-sm">
+          <span className="inline-flex items-center gap-2 font-mono text-foreground text-xs uppercase tracking-wider opacity-80 transition-opacity duration-300 group-hover:opacity-100 md:text-sm md:text-white">
             Abrir no GitHub
             <ArrowUpRight className="size-4" />
           </span>

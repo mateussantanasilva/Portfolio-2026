@@ -109,6 +109,7 @@ export const portfolio = {
   hero: {
     portrait: heroPortrait,
     title: 'Desenvolvedor',
+    titleShort: 'Dev',
   },
   intro: {
     body: 'Atuo como desenvolvedor front-end em sistemas para campanhas, gestão empresarial e financeira, automações, além de apps mobile e desktop offline. Sou pós-graduado em Engenharia de Software e graduado pela FATEC Zona Leste, com Láurea Acadêmica.',

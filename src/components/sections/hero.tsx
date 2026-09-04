@@ -5,7 +5,7 @@ import { BubbleEntrance } from '@/components/reveal'
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
 import SpecularButton from '@/components/ui/specular-button'
 import { StrokeText } from '@/components/ui/stroke-text'
-import { heroTitleMark } from '@/data/hero-title-mark'
+import { heroTitleMark, heroTitleMarkDev } from '@/data/hero-title-mark'
 import { portfolio } from '@/data/portfolio'
 import { useTheme } from '@/providers/theme-provider'
 
@@ -17,16 +17,16 @@ export function Hero() {
 
   return (
     <section
-      className="relative flex h-dvh w-full flex-col overflow-hidden bg-portfolio-hero-bg"
+      className="relative flex h-svh w-full flex-col overflow-hidden bg-portfolio-hero-bg"
       id="inicio"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-[2] flex items-end justify-center overflow-hidden"
+        className="pointer-events-none absolute inset-0 z-[2] flex items-end justify-center overflow-hidden pt-24 md:pt-0"
       >
         <img
           alt=""
-          className="size-full origin-bottom translate-y-[16%] scale-[1.14] object-contain object-bottom sm:translate-y-[17%] sm:scale-[1.16]"
+          className="h-full w-auto max-h-[min(100%,800px)] max-w-[min(100%,460px)] origin-bottom scale-[1.12] object-contain object-bottom md:max-h-none md:max-w-none md:size-full md:translate-y-[17%] md:scale-[1.16]"
           height={1080}
           src={hero.portrait}
           width={973}
@@ -34,16 +34,19 @@ export function Hero() {
       </div>
 
       <div className="container-portfolio relative z-10 flex flex-1 flex-col py-8">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-          <motion.p
-            animate={{ opacity: 1, y: 0 }}
-            className="font-medium text-base text-foreground sm:text-lg md:text-xl"
-            initial={reduceMotion ? false : { opacity: 0, y: -12 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            {brand.handle}
-          </motion.p>
-          <BubbleEntrance className="flex sm:justify-end" delay={0.08}>
+        <div className="flex flex-row items-start justify-between gap-4">
+          <div className="flex flex-col gap-4">
+            <motion.p
+              animate={{ opacity: 1, y: 0 }}
+              className="font-medium text-base text-foreground sm:text-lg md:text-xl"
+              initial={reduceMotion ? false : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              {brand.handle}
+            </motion.p>
+            <HeroSocials variant="header" />
+          </div>
+          <BubbleEntrance className="flex shrink-0" delay={0.08}>
             <AnimatedThemeToggler
               className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-transparent text-foreground transition-opacity hover:opacity-70 md:size-12"
               onThemeChange={setTheme}
@@ -53,12 +56,29 @@ export function Hero() {
         </div>
       </div>
 
-      <HeroSocials />
+      <HeroSocials variant="dock" />
 
-      <div className="pointer-events-none absolute inset-x-0 top-[26%] z-[1] flex justify-center text-foreground sm:top-[28%]">
-        <h1 className="sr-only">{title}</h1>
+      <h1 className="sr-only">{title}</h1>
+
+      <div className="pointer-events-none absolute inset-x-0 top-[9.75rem] z-[1] flex justify-center text-foreground sm:top-[24%] md:top-[26%]">
         <div className="container-portfolio">
           <StrokeText
+            className="sm:hidden"
+            drawDuration={1.5}
+            fillColor="currentColor"
+            fillDelay={0.15}
+            fillMode="wipe"
+            height={heroTitleMarkDev.height}
+            label={hero.titleShort.toUpperCase()}
+            letters={heroTitleMarkDev.letters}
+            stagger={0.045}
+            strokeColor="currentColor"
+            strokeWidth={2.4}
+            viewBox={heroTitleMarkDev.viewBox}
+            width={heroTitleMarkDev.width}
+          />
+          <StrokeText
+            className="hidden sm:block"
             drawDuration={1.5}
             fillColor="currentColor"
             fillDelay={0.15}
@@ -76,7 +96,7 @@ export function Hero() {
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-24 z-20 sm:bottom-28">
-        <div className="container-portfolio flex justify-end">
+        <div className="container-portfolio flex justify-center md:justify-end">
           <BubbleEntrance className="pointer-events-auto" delay={0.45}>
             <SpecularButton
               aria-label="Ir para a seção sobre"
@@ -99,7 +119,10 @@ export function Hero() {
                       }
                 }
               >
-                <ArrowDown className="size-6 md:size-7" strokeWidth={1.75} />
+                <ArrowDown
+                  className="size-6 text-white md:size-7 md:text-current"
+                  strokeWidth={1.75}
+                />
               </motion.span>
             </SpecularButton>
           </BubbleEntrance>

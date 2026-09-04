@@ -47,7 +47,7 @@ export function FooterBrand() {
               <p className="font-heading font-light text-sm text-white/70 uppercase tracking-wider md:text-base">
                 {brand.tagline}
               </p>
-              <p className="mt-2 font-heading font-medium text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl">
+              <p className="mt-2 font-heading font-medium text-3xl leading-none tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
                 {brand.displayName}
               </p>
               <a
@@ -59,17 +59,17 @@ export function FooterBrand() {
             </div>
           </Reveal>
 
-          <div className="size-8 shrink-0 md:size-12" ref={scrollTopRef}>
+          <div className="size-10 shrink-0 md:size-12" ref={scrollTopRef}>
             {scrollTopInView ? (
               <BubbleEntrance delay={0.06}>
                 <SpecularButton
                   aria-label="Voltar ao topo"
-                  className="group"
+                  className="group size-10 md:size-12"
                   href="#inicio"
                   size="icon"
                   theme="ghost"
                 >
-                  <ArrowUp className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 md:size-5" />
+                  <ArrowUp className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 md:size-[1.35rem]" />
                 </SpecularButton>
               </BubbleEntrance>
             ) : null}
@@ -77,7 +77,7 @@ export function FooterBrand() {
         </div>
 
         <nav aria-label="Rodapé" className="border-white/10 border-t pt-8">
-          <ul className="flex flex-wrap gap-x-4 gap-y-2">
+          <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:justify-start">
             {sectionLinks.map((link, index) => (
               <Reveal
                 as="li"
