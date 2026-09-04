@@ -35,6 +35,9 @@ export const REVEAL_Y = 12
 export const REVEAL_X = 12
 export const REVEAL_DURATION = 0.45
 
+/** Observação por card — evita animar fora da tela em grids altos (mobile) */
+export const CARD_IN_VIEW = { amount: 0.15, once: true } as const
+
 export const revealFadeUp = {
   hidden: { opacity: 0, y: REVEAL_Y },
   visible: { opacity: 1, y: 0 },

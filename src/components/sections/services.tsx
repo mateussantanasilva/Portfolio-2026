@@ -5,11 +5,8 @@ import { SectionDescription } from '@/components/reveal'
 import { SectionTitle } from '@/components/section-title'
 import { ShinySurface } from '@/components/ui/shiny-text'
 import { portfolio } from '@/data/portfolio'
-import { cardSpring, REVEAL_Y } from '@/lib/motion'
+import { CARD_IN_VIEW, CARD_STAGGER, cardSpring, REVEAL_Y } from '@/lib/motion'
 import { cn } from '@/lib/utils'
-
-/** 4 cards — intervalo maior que o stack para surgir um de cada vez */
-const SERVICE_CARD_STAGGER = 0.12
 
 const serviceHoverTransition = {
   damping: 24,
@@ -30,8 +27,6 @@ interface ServiceCardProps {
   isHovered: boolean
   item: ServiceItem
   onHoverStart: () => void
-  reduceMotion: boolean
-  visible: boolean
 }
 
 function ServiceCard({
@@ -40,10 +35,11 @@ function ServiceCard({
   isHovered,
   item,
   onHoverStart,
-  reduceMotion,
-  visible,
 }: ServiceCardProps) {
-  const revealed = reduceMotion || visible
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, CARD_IN_VIEW)
+  const reduceMotion = useReducedMotion()
+  const revealed = Boolean(reduceMotion) || inView
 
   return (
     <motion.div
@@ -54,12 +50,13 @@ function ServiceCard({
       }
       className="h-full"
       initial={false}
+      ref={ref}
       transition={
         reduceMotion
           ? { duration: 0 }
           : {
               ...cardSpring,
-              delay: index * SERVICE_CARD_STAGGER,
+              delay: index * CARD_STAGGER,
             }
       }
     >
@@ -127,11 +124,7 @@ function ServiceCard({
 
 export function Services() {
   const { services } = portfolio
-  const reduceMotion = useReducedMotion()
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
-  const gridInView = useInView(gridRef, { amount: 0.2, once: true })
-  const cardsVisible = Boolean(reduceMotion) || gridInView
 
   return (
     <section className="relative z-10" id="atuacao">
@@ -152,7 +145,6 @@ export function Services() {
           <div
             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-8 xl:grid-cols-4"
             onMouseLeave={() => setHoveredIndex(null)}
-            ref={gridRef}
           >
             {services.items.map((item, index) => {
               const isHovered = hoveredIndex === index
@@ -167,8 +159,6 @@ export function Services() {
                   item={item}
                   key={item.name}
                   onHoverStart={() => setHoveredIndex(index)}
-                  reduceMotion={Boolean(reduceMotion)}
-                  visible={cardsVisible}
                 />
               )
             })}

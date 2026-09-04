@@ -6,10 +6,7 @@ import { BubbleEntrance, SectionDescription } from '@/components/reveal'
 import { SectionTitle } from '@/components/section-title'
 import SpecularButton from '@/components/ui/specular-button'
 import { portfolio } from '@/data/portfolio'
-import { cardSpring, REVEAL_Y } from '@/lib/motion'
-
-/** Projetos — intervalo maior entre cards na revelação */
-const WORK_CARD_STAGGER = 0.12
+import { CARD_IN_VIEW, CARD_STAGGER, cardSpring, REVEAL_Y } from '@/lib/motion'
 
 const workHoverTransition = {
   damping: 28,
@@ -27,24 +24,30 @@ interface WorkProject {
 interface WorkCardProps {
   index: number
   project: WorkProject
-  reduceMotion: boolean
-  visible: boolean
 }
 
-function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
-  const revealed = reduceMotion || visible
+function WorkCard({ index, project }: WorkCardProps) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, CARD_IN_VIEW)
+  const reduceMotion = useReducedMotion()
+  const revealed = Boolean(reduceMotion) || inView
 
   return (
     <motion.div
-      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: REVEAL_Y }}
+      animate={
+        revealed
+          ? { opacity: 1, scale: 1, y: 0 }
+          : { opacity: 0, scale: 0.96, y: REVEAL_Y }
+      }
       className="h-full"
       initial={false}
+      ref={ref}
       transition={
         reduceMotion
           ? { duration: 0 }
           : {
               ...cardSpring,
-              delay: index * WORK_CARD_STAGGER,
+              delay: index * CARD_STAGGER,
             }
       }
     >
@@ -94,9 +97,9 @@ function WorkCard({ index, project, reduceMotion, visible }: WorkCardProps) {
 export function ImpressiveWorks() {
   const { works } = portfolio
   const reduceMotion = useReducedMotion()
-  const gridRef = useRef<HTMLDivElement>(null)
-  const gridInView = useInView(gridRef, { amount: 0.2, once: true })
-  const cardsVisible = Boolean(reduceMotion) || gridInView
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const ctaInView = useInView(ctaRef, CARD_IN_VIEW)
+  const showCta = Boolean(reduceMotion) || ctaInView
 
   return (
     <section
@@ -111,41 +114,34 @@ export function ImpressiveWorks() {
           </SectionDescription>
         </div>
 
-        <div
-          className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8"
-          ref={gridRef}
-        >
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           {works.items.map((project, index) => (
-            <WorkCard
-              index={index}
-              key={project.title}
-              project={project}
-              reduceMotion={Boolean(reduceMotion)}
-              visible={cardsVisible}
-            />
+            <WorkCard index={index} key={project.title} project={project} />
           ))}
         </div>
 
-        {cardsVisible ? (
-          <BubbleEntrance delay={works.items.length * WORK_CARD_STAGGER + 0.08}>
-            <SpecularButton
-              href={works.exploreHref}
-              rel="noopener noreferrer"
-              size="md"
-              target="_blank"
-              theme="outline"
-            >
-              <img
-                alt=""
-                className="size-5 object-contain dark:brightness-0 dark:invert"
-                height={20}
-                src={iconGithub}
-                width={20}
-              />
-              {works.exploreLabel}
-            </SpecularButton>
-          </BubbleEntrance>
-        ) : null}
+        <div ref={ctaRef}>
+          {showCta ? (
+            <BubbleEntrance delay={CARD_STAGGER + 0.08}>
+              <SpecularButton
+                href={works.exploreHref}
+                rel="noopener noreferrer"
+                size="md"
+                target="_blank"
+                theme="outline"
+              >
+                <img
+                  alt=""
+                  className="size-5 object-contain dark:brightness-0 dark:invert"
+                  height={20}
+                  src={iconGithub}
+                  width={20}
+                />
+                {works.exploreLabel}
+              </SpecularButton>
+            </BubbleEntrance>
+          ) : null}
+        </div>
       </div>
     </section>
   )

@@ -8,6 +8,7 @@ import { type StackCategory, stackCategories, stackRows } from '@/data/stack'
 import {
   BUBBLE_AFTER_CARD,
   bubbleSpring,
+  CARD_IN_VIEW,
   CARD_STAGGER,
   cardSpring,
   hoverSpring,
@@ -118,7 +119,7 @@ function TechBadges({
 
 function StackBentoCard({ category, index = 0 }: StackBentoCardProps) {
   const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { amount: 0.15, once: true })
+  const inView = useInView(ref, CARD_IN_VIEW)
   const reduceMotion = useReducedMotion()
   const [isHovered, setIsHovered] = useState(false)
   const hasIcons = Boolean(category.techs?.length)

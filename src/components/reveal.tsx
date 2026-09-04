@@ -8,6 +8,7 @@ import {
 import { Children, type ReactNode, useRef, useState } from 'react'
 import {
   bubbleSpring,
+  CARD_IN_VIEW,
   CARD_STAGGER,
   cardSpring,
   REVEAL_DURATION,
@@ -184,7 +185,7 @@ interface RevealCardProps
 }
 
 export function RevealCard({
-  amount = 0.15,
+  amount = CARD_IN_VIEW.amount,
   children,
   className,
   delay,
@@ -192,7 +193,7 @@ export function RevealCard({
   ...props
 }: RevealCardProps) {
   const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { amount, once: true })
+  const inView = useInView(ref, { amount, once: CARD_IN_VIEW.once })
   const reduceMotion = useReducedMotion()
   const visible = reduceMotion || inView
   const resolvedDelay = delay ?? index * CARD_STAGGER
@@ -202,7 +203,7 @@ export function RevealCard({
       animate={
         visible
           ? { opacity: 1, scale: 1, y: 0 }
-          : { opacity: 0, scale: 0.97, y: REVEAL_Y }
+          : { opacity: 0, scale: 0.96, y: REVEAL_Y }
       }
       className={className}
       initial={false}
