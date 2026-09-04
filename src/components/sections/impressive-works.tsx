@@ -104,7 +104,7 @@ export function ImpressiveWorks() {
       id="projetos"
     >
       <div className="flex flex-col items-center gap-8 md:gap-12 lg:gap-16">
-        <div className="flex w-full flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionTitle>{works.title}</SectionTitle>
           <SectionDescription titleLength={works.title.length}>
             {works.description}

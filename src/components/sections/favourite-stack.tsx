@@ -209,7 +209,7 @@ export function FavouriteStack() {
       id="habilidades"
     >
       <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <SectionTitle>{stack.title}</SectionTitle>
           <SectionDescription titleLength={stack.title.length}>
             {stack.description}
@@ -226,7 +226,17 @@ export function FavouriteStack() {
           ))}
         </div>
 
-        <div className="hidden flex-col gap-4 md:flex">
+        <div className="hidden grid-cols-2 items-stretch gap-4 md:grid lg:hidden">
+          {stackCategories.map((category, index) => (
+            <StackBentoCard
+              category={category}
+              index={index}
+              key={category.id}
+            />
+          ))}
+        </div>
+
+        <div className="hidden flex-col gap-4 lg:flex">
           {stackRows.map((row) => (
             <div
               className="grid grid-cols-[1fr_0.75fr_1fr] items-stretch gap-4"

@@ -139,7 +139,7 @@ export function Services() {
 
       <div className="container-portfolio section-spacing relative z-10">
         <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <SectionTitle className="text-white">{services.title}</SectionTitle>
             <SectionDescription
               className="text-white/60"
@@ -150,7 +150,7 @@ export function Services() {
           </div>
 
           <div
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-8 xl:grid-cols-4"
             onMouseLeave={() => setHoveredIndex(null)}
             ref={gridRef}
           >

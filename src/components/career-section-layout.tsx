@@ -31,7 +31,7 @@ export function CareerSectionLayout({
         <div className="flex flex-col gap-4 md:gap-6">
           <SectionTitle>{title}</SectionTitle>
           <SectionDescription
-            className="max-w-sm text-pretty md:text-xl"
+            className="max-w-md text-pretty md:text-lg"
             titleLength={title.length}
           >
             {description}

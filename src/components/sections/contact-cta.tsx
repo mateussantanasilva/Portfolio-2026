@@ -180,7 +180,7 @@ export function ContactCta() {
               <h2 className="font-heading font-medium text-3xl text-white leading-none tracking-tight md:text-4xl lg:text-5xl">
                 {contact.headline}
               </h2>
-              <p className="max-w-lg text-balance font-heading font-light text-sm text-white/60 uppercase tracking-wide md:text-lg lg:text-xl">
+              <p className="max-w-md text-balance font-heading font-light text-sm text-white/60 uppercase tracking-wide sm:text-base md:text-lg lg:text-xl">
                 {contact.subtitle}
               </p>
             </div>
