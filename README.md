@@ -6,8 +6,6 @@ Portfólio pessoal de **Mateus Santana**, desenvolvedor de software com foco em 
     <img src="./.github/thumbnail.png" width="90%" />
 </div>
 
----
-
 ## Sobre mim
 
 Sou desenvolvedor front-end em São Paulo (Zona Leste). Crio interfaces e sistemas com visual moderno, animações performáticas e experiências digitais confiáveis e fáceis de manter.
