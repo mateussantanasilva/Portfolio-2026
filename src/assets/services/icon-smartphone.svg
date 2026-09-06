@@ -1,0 +1,20 @@
+<svg
+  fill="none"
+  height="32"
+  overflow="visible"
+  preserveAspectRatio="none"
+  style="display: block;"
+  viewBox="0 0 32 32"
+  width="32"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g id="smartphone">
+    <path
+      d="M16 24.0006H16.0133M9.33257 2.6656H22.6674C24.1404 2.6656 25.3344 3.8596 25.3344 5.33248V26.6675C25.3344 28.1404 24.1404 29.3344 22.6674 29.3344H9.33257C7.85964 29.3344 6.6656 28.1404 6.6656 26.6675V5.33248C6.6656 3.8596 7.85964 2.6656 9.33257 2.6656Z"
+      id="Vector"
+      stroke="#1A1A1A"
+      stroke-linecap="round"
+      stroke-width="2"
+    />
+  </g>
+</svg>
